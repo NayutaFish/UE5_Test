@@ -11,38 +11,38 @@
 #include "Materials/Material.h"
 #include "Engine/World.h"
 
+// ────── 构造函数（类比 Unity：Awake，但场景未加载）──────
 ATest_GamePlayCharacter::ATest_GamePlayCharacter()
 {
-	// Set size for player capsule
+	// 设置胶囊体碰撞大小（半径42，高96）
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
-	// Don't rotate character to camera direction
+	// 不让角色随控制器旋转（由鼠标控制方向）
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
-	// Configure character movement
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f);
-	GetCharacterMovement()->bConstrainToPlane = true;
-	GetCharacterMovement()->bSnapToPlaneAtStart = true;
+	// 配置角色移动组件
+	GetCharacterMovement()->bOrientRotationToMovement = true;   // 面朝移动方向
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f); // 转身速度
+	GetCharacterMovement()->bConstrainToPlane = true;           // 限制在平面上
+	GetCharacterMovement()->bSnapToPlaneAtStart = true;         // 开始时吸附到平面
 
-	// Create the camera boom component
+	// ── 创建弹簧臂（Camera Boom）──
+	// 类似 Unity 把摄像机作为子物体挂到 Player 上并抬高
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->SetUsingAbsoluteRotation(true);
-	CameraBoom->TargetArmLength = 800.f;
-	CameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
-	CameraBoom->bDoCollisionTest = false;
+	CameraBoom->SetUsingAbsoluteRotation(true);   // 弹簧臂自身不旋转
+	CameraBoom->TargetArmLength = 800.f;          // 摄像机距离角色800单位
+	CameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f)); // 俯视60度
+	CameraBoom->bDoCollisionTest = false;          // 不进行碰撞检测
 
-	// Create the camera component
+	// ── 创建摄像机 ──
 	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
-
 	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	TopDownCameraComponent->bUsePawnControlRotation = false;
+	TopDownCameraComponent->bUsePawnControlRotation = false;  // 摄像机不随控制器转
 
-	// Activate ticking in order to update the cursor every frame.
+	// 开启 Tick（每帧更新）
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 }
@@ -50,13 +50,11 @@ ATest_GamePlayCharacter::ATest_GamePlayCharacter()
 void ATest_GamePlayCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// stub
+	// 初始化逻辑可以写在这里
 }
 
 void ATest_GamePlayCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-
-	// stub
+	// 每帧逻辑可以写在这里
 }

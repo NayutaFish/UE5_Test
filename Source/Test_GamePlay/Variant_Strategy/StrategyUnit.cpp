@@ -15,17 +15,17 @@ AStrategyUnit::AStrategyUnit()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	// ensure this unit has a valid AI controller to handle move requests
+	// 确保单位有有效的 AI 控制器来处理移动请求
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	// create the interaction range sphere
+	// 创建交互范围球体
 	InteractionRange = CreateDefaultSubobject<USphereComponent>(TEXT("Interaction Range"));
 	InteractionRange->SetupAttachment(RootComponent);
 
 	InteractionRange->SetSphereRadius(100.0f);
 	InteractionRange->SetCollisionProfileName(FName("OverlapAllDynamic"));
 
-	// configure movement
+	// 配置角色移动组件
 	GetCharacterMovement()->GravityScale = 1.5f;
 	GetCharacterMovement()->MaxAcceleration = 1000.0f;
 	GetCharacterMovement()->BrakingFrictionFactor = 1.0f;
@@ -44,12 +44,12 @@ AStrategyUnit::AStrategyUnit()
 
 void AStrategyUnit::NotifyControllerChanged()
 {
-	// validate and save a copy of the AI controller reference
+	// 验证并保存 AI 控制器引用
 	AIController = Cast<AAIController>(Controller);
-	
+
 	if (AIController)
 	{
-		// subscribe to the move finished handler on the path following component
+		// 订阅路径跟随组件的移动完成回调
 		UPathFollowingComponent* PFComp = AIController->GetPathFollowingComponent();
 		if (PFComp)
 		{
@@ -60,59 +60,59 @@ void AStrategyUnit::NotifyControllerChanged()
 
 void AStrategyUnit::StopMoving()
 {
-	// use the character movement component to stop movement
+	// 使用角色移动组件立即停止移动
 	GetCharacterMovement()->StopMovementImmediately();
 
-	// stop the unit's interaction animation
+	// 停止单位的交互动画
 	BP_StopAnimation();
 }
 
 void AStrategyUnit::UnitSelected()
 {
-	// pass control to BP
+	// 交由蓝图处理
 	BP_UnitSelected();
 }
 
 void AStrategyUnit::UnitDeselected()
 {
-	// pass control to BP
+	// 交由蓝图处理
 	BP_UnitDeselected();
 }
 
 void AStrategyUnit::Interact(AStrategyUnit* Interactor)
 {
-	// ensure the interactor is valid
+	// 确保交互者有效
 	if (IsValid(Interactor))
 	{
-		// rotate towards the actor we're interacting with
+		// 旋转自身面向交互者
 		SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Interactor->GetActorLocation()));
 
-		// signal the interactor to play its interaction behavior
+		// 通知交互者播放交互行为
 		Interactor->BP_InteractionBehavior(this);
 
-		// play our own interaction behavior
+		// 播放自身的交互行为
 		BP_InteractionBehavior(Interactor);
 	}
-	
+
 }
 
 void AStrategyUnit::MoveToLocation(const FVector& Location, bool bInteract, const TArray<AStrategyUnit*> IgnoreList)
 {
-	// cache the movement and interaction parameters
+	// 缓存移动和交互参数
 	CurrentMovementGoal = Location;
 	bInteractOnArrival = bInteract;
 	InteractIgnoreList = IgnoreList;
 
-	// stop movement and animation
+	// 停止当前移动和动画
 	StopMoving();
 
-	// choose the EnvQuery to use
+	// 根据是否需要交互选择合适的 EQS 查询
 	UEnvQuery* MoveQuery = bInteractOnArrival ? InteractionQuery : NoInteractionQuery;
 
-	// choose the run mode to use. The main interacting unit gets the closest result, all others choose randomly from top 25%
+	// 选择运行模式：主要交互单位取最近结果，其余单位从最佳 25% 中随机选取
 	TEnumAsByte<EEnvQueryRunMode::Type> RunMode = bInteractOnArrival ? EEnvQueryRunMode::SingleResult : EEnvQueryRunMode::RandomBest25Pct;
 
-	// run an EQS to resolve the movement destination using the NavMesh
+	// 运行 EQS 查询，基于 NavMesh 解析移动目标
 	EnvQueryInstance = UEnvQueryManager::RunEQSQuery(this, MoveQuery, this,  RunMode, UEnvQueryInstanceBlueprintWrapper::StaticClass());
 
 	if (IsValid(EnvQueryInstance))
@@ -128,21 +128,21 @@ FVector AStrategyUnit::GetMovementGoal() const
 
 void AStrategyUnit::OnEQSFinished(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus)
 {
-	// was the EnvQuery successful?
+	// EQS 查询是否成功？
 	if (QueryInstance)
 	{
-		// get the query result locations
+		// 获取查询结果位置
 		TArray<FVector> ResultLocations;
 
 		if(QueryInstance->GetQueryResultsAsLocations(ResultLocations))
 		{
-			// grab the top result
+			// 取最佳结果
 			CurrentMovementGoal = ResultLocations[0];
 
-			// ensure we have a valid AI Controller
+			// 确保有有效的 AI 控制器
 			if (AIController)
 			{
-				// set up the AI Move Request
+				// 构建 AI 移动请求
 				FAIMoveRequest MoveReq;
 
 				MoveReq.SetGoalLocation(CurrentMovementGoal);
@@ -154,14 +154,14 @@ void AStrategyUnit::OnEQSFinished(UEnvQueryInstanceBlueprintWrapper* QueryInstan
 				MoveReq.SetNavigationFilter(AIController->GetDefaultNavigationFilterClass());
 				MoveReq.SetCanStrafe(false);
 
-				// request a move to the AI Controller
+				// 向 AI 控制器发出移动请求
 				FNavPathSharedPtr FollowedPath;
 				const FPathFollowingRequestResult ResultData = AIController->MoveTo(MoveReq, &FollowedPath);
-		
-				// check if we're already at the goal
+
+				// 检查是否已经到达目标
 				if(ResultData.Code == EPathFollowingRequestResult::AlreadyAtGoal)
 				{
-					// finish movement immediately
+					// 立即完成移动
 					HandleMoveFinished();
 				}
 			}
@@ -176,12 +176,12 @@ void AStrategyUnit::OnMoveFinished(FAIRequestID RequestID, const FPathFollowingR
 
 void AStrategyUnit::HandleMoveFinished()
 {
-	// broadcast the move completed delegate
+	// 广播移动完成委托
 	OnMoveCompleted.Broadcast(this);
 
 	if (bInteractOnArrival)
 	{
-		// do an overlap test to find nearby interactive objects
+		// 执行重叠检测，寻找附近可交互的物体
 		TArray<FOverlapResult> OutOverlaps;
 
 		FCollisionShape CollisionSphere;
@@ -192,7 +192,7 @@ void AStrategyUnit::HandleMoveFinished()
 
 		FCollisionQueryParams QueryParams;
 
-		// add the selected units to the ignored list
+		// 将自身加入忽略列表
 		QueryParams.AddIgnoredActor(this);
 
 		for (const AActor* Current : InteractIgnoreList)
@@ -202,7 +202,7 @@ void AStrategyUnit::HandleMoveFinished()
 
 		if (GetWorld()->OverlapMultiByObjectType(OutOverlaps, GetActorLocation(), FQuat::Identity, ObjectParams, CollisionSphere, QueryParams))
 		{
-			// find the first unit we've overlapped, and interact with it
+			// 找到重叠到的第一个单位并与之交互
 			for (const FOverlapResult& CurrentOverlap : OutOverlaps)
 			{
 				if (AStrategyUnit* CurrentUnit = Cast<AStrategyUnit>(CurrentOverlap.GetActor()))

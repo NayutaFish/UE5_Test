@@ -7,31 +7,31 @@
 #include "StrategyUI.generated.h"
 
 /**
- *  Simple UI widget for the strategy game
- *	Keeps track of the number of units currently selected
+ * 策略游戏的简单 UI 控件
+ * 追踪当前选中的单位数量
  */
 UCLASS(abstract)
 class UStrategyUI : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 protected:
 
-	/** Number of units currently selected */
+	/** 当前选中的单位数量 */
 	int32 SelectedUnitCount = 0;
 
 public:
 
-	/** Sets the number of units selected */
+	/** 设置选中的单位数量 */
 	void SetSelectedUnitsCount(int32 Count);
 
-	/** Blueprint handler to update unit count sub-widgets */
+	/** 蓝图可覆写：更新单位计数的子控件 */
 	UFUNCTION(BlueprintImplementableEvent, Category="UI", meta = (DisplayName="Update Units Count"))
 	void BP_UpdateUnitsCount();
 
 protected:
 
-	/** Returns the number of units selected */
+	/** 返回当前选中的单位数量 */
 	UFUNCTION(BlueprintPure, Category="UI")
 	int32 GetSelectedUnitsCount() { return SelectedUnitCount; }
 };

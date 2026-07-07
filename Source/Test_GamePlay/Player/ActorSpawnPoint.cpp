@@ -21,7 +21,7 @@ void AActorSpawnPoint::BeginPlay()
 // Called every frame
 void AActorSpawnPoint::Tick(float DeltaTime)
 {
+	//Super::Tick(DeltaTime);
 	Super::Tick(DeltaTime);
-
 }
 

@@ -9,94 +9,94 @@
 class UTwinStickUI;
 
 /**
- *  Simple Game Mode for a Twin Stick Shooter game.
- *  Manages the score and UI
+ *  双摇杆射击游戏的 GameMode。
+ *  管理分数、连击倍数和 UI。
  */
 UCLASS(abstract)
 class ATwinStickGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 protected:
 
-	/** Type of UI Widget to spawn */
+	/** 要生成的 UI Widget 类型 */
 	UPROPERTY(EditAnywhere, Category="Twin Stick")
 	TSubclassOf<UTwinStickUI> UIWidgetClass;
 
-	/** Pointer to the spawned UI Widget */
+	/** 指向生成的 UI Widget */
 	TObjectPtr<UTwinStickUI> UIWidget;
 
-	/** Current game score */
+	/** 当前得分 */
 	int32 Score = 0;
 
-	/** Current combo multiplier */
+	/** 当前连击倍数 */
 	int32 Combo = 1;
 
-	/** Current combo increment value */
+	/** 连击增量计数 */
 	int32 ComboIncrement = 0;
 
-	/** Number of combo hits to process before incrementing the combo multiplier */
+	/** 连击增量达到此值后提升倍数 */
 	UPROPERTY(EditAnywhere, Category="Twin Stick", meta=(ClampMin = 0, ClampMax = 10))
 	int32 ComboIncrementMax = 5;
 
-	/** Maximum allowed combo multiplier value */
+	/** 最大连击倍数 */
 	UPROPERTY(EditAnywhere, Category="Twin Stick", meta=(ClampMin = 0, ClampMax = 10))
 	int32 ComboCap = 4;
 
-	/** Max time between kills before the combo multiplier resets */
+	/** 连击超时重置时间 */
 	UPROPERTY(EditAnywhere, Category="Twin Stick", meta=(ClampMin = 0, ClampMax = 10, Units = "s"))
 	float ComboCooldown = 3.0f;
 
-	/** Game time of the last combo kill */
+	/** 上次连击击杀的游戏时间 */
 	float LastComboTime = 0.0f;
 
 	FTimerHandle ComboTimer;
 
-	/** Max number of NPCs to allow in the level at once */
+	/** 场景中允许的最大 NPC 数量 */
 	UPROPERTY(EditAnywhere, Category="Twin Stick", meta=(ClampMin = 0, ClampMax = 100))
 	int32 NPCCap = 20;
 
-	/** Current number of NPCs in the level */
+	/** 场景中当前的 NPC 数量 */
 	int32 NPCCount = 0;
 
 public:
 
-	/** Gameplay initialization */
+	/** 游戏初始化 */
 	virtual void BeginPlay() override;
 
-	/** Cleanup */
+	/** 清理 */
 	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
 
 public:
 
-	/** Called when an item has been used */
+	/** 当物品被使用时调用 */
 	void ItemUsed(int32 Value);
 
-	/** Increments the score by the given value */
+	/** 按给定值增加分数 */
 	void ScoreUpdate(int32 Value);
 
 protected:
 
-	/** Creates the UI widget if it hasn't been created already */
+	/** 创建 UI Widget（如果尚未创建） */
 	void CreateUI();
 
-	/** Updates the combo multiplier */
+	/** 更新连击倍数 */
 	void ComboUpdate();
 
-	/** Resets the combo cooldown timer */
+	/** 重置连击冷却定时器 */
 	void ResetComboCooldown();
 
-	/** Resets the combo multiplier after the cooldown time expires */
+	/** 连击超时后重置倍数 */
 	void ResetCombo();
 
 public:
 
-	/** Returns true if the number of NPCs is under the cap */
+	/** 返回当前 NPC 数量是否低于上限 */
 	bool CanSpawnNPCs();
 
-	/** Increases the NPC count */
+	/** 增加 NPC 计数 */
 	void IncreaseNPCs();
 
-	/** Decreases the NPC count */
+	/** 减少 NPC 计数 */
 	void DecreaseNPCs();
 };

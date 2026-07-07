@@ -7,10 +7,10 @@
 
 void UEnvQueryContext_MoveGoal::ProvideContext(FEnvQueryInstance& QueryInstance, FEnvQueryContextData& ContextData) const
 {
-	// get the querying unit
+	// 获取发起查询的单位
 	if (AStrategyUnit* QuerierActor = Cast<AStrategyUnit>(QueryInstance.Owner.Get()))
 	{
-		// add the last recorded danger location to the context
+		// 将移动目标位置添加到上下文数据中
 		UEnvQueryItemType_Point::SetContextHelper(ContextData, QuerierActor->GetMovementGoal());
 	}
 }

@@ -10,23 +10,23 @@ AStrategyPawn::AStrategyPawn()
 {
  	PrimaryActorTick.bCanEverTick = true;
 
-	// create the root
+	// 创建根组件
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
-	// create the camera
+	// 创建摄像机组件
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(RootComponent);
 
-	// create the movement component
+	// 创建浮动移动组件
 	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Floating Pawn Movement"));
 
-	// configure the camera
+	// 配置摄像机为正交投影模式
 	Camera->ProjectionMode = ECameraProjectionMode::Orthographic;
 	Camera->OrthoWidth = 1500.0f;
 	Camera->AutoPlaneShift = 1.0f;
 	Camera->bUpdateOrthoPlanes = false;
 
-	// configure the movement comp
+	// 配置移动组件：限制在水平平面上移动
 	FloatingPawnMovement->bConstrainToPlane = true;
 	FloatingPawnMovement->SetPlaneConstraintNormal(FVector::UpVector);
 	FloatingPawnMovement->SetPlaneConstraintOrigin(FVector::UpVector * 1500.0f);
@@ -34,6 +34,6 @@ AStrategyPawn::AStrategyPawn()
 
 void AStrategyPawn::SetZoomModifier(float Value)
 {
-	// set the ortho width on the camera
+	// 设置摄像机的正交宽度（实现缩放效果）
 	Camera->SetOrthoWidth(Value);
 }

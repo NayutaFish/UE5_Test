@@ -10,67 +10,67 @@ class UStaticMeshComponent;
 class USphereComponent;
 
 /**
- *  A simple persistent AoE attack.
- *  Damages characters that enter for as long as it's active
+ *  持续性范围攻击（AoE）。
+ *  在激活期间持续伤害进入范围的敌人。
  */
 UCLASS(abstract)
 class ATwinStickAoEAttack : public AActor
 {
 	GENERATED_BODY()
-	
-	/** Provides the visual representation for the AoE attack */
+
+	/** AoE 视觉效果 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* SphereVisual;
 
-	/** Provides the collision volume for the AoE attack */
+	/** AoE 碰撞体积 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	USphereComponent* CollisionSphere;
 
 protected:
 
-	/** Timer to start AoE damage checks */
+	/** 启动 AoE 伤害检查的定时器 */
 	FTimerHandle StartAoETimer;
 
-	/** Timer to end AoE damage checks */
+	/** 停止 AoE 伤害检查的定时器 */
 	FTimerHandle StopAoETimer;
 
-	/** Time to wait between AoE damage ticks */
+	/** AoE 伤害检测间隔 */
 	UPROPERTY(EditAnywhere, Category="AoE Attack", meta=(ClampMin = 0, ClampMax = 5, Units = "s"))
 	float StartAoETime = 0.033f;
 
-	/** Time to wait before stopping AoE damage checks */
+	/** AoE 持续时长 */
 	UPROPERTY(EditAnywhere, Category="AoE Attack", meta=(ClampMin = 0, ClampMax = 5, Units = "s"))
 	float StopAoETime = 0.5f;
 
-	/** While true, the AoE will damage anything that overlaps it */
+	/** 为 true 时 AoE 会对重叠的物体造成伤害 */
 	bool bIsAoEActive = false;
 
-public:	
-	
-	/** Constructor */
+public:
+
+	/** 构造函数 */
 	ATwinStickAoEAttack();
 
 protected:
 
-	/** Initialization */
+	/** 初始化 */
 	virtual void BeginPlay() override;
 
-	/** Cleanup */
+	/** 清理 */
 	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
 
 protected:
 
-	/** Called when the start AoE timer triggers */
+	/** 启动 AoE 定时器回调 */
 	void StartAoE();
 
-	/** Called when the stop AoE timer triggers */
+	/** 停止 AoE 定时器回调 */
 	void StopAoE();
 
-	/** Allows Blueprint handling of AoE fade out effects. NOTE: Call Destroy Actor at the end of this! */
+	/** 蓝图处理 AoE 淡出效果。注意：结束时必须调用 Destroy Actor！ */
 	UFUNCTION(BlueprintImplementableEvent, Category="AoE Attack")
 	void BP_AoEFinished();
 
-	/** Handles collision with the AoE while it's active */
+	/** 处理 AoE 激活期间与敌人的碰撞重叠 */
 	UFUNCTION()
 	void OnAoEOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

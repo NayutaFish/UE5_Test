@@ -4,5 +4,7 @@
 
 ATest_GamePlayGameMode::ATest_GamePlayGameMode()
 {
-	// stub
+	/* 所有设置都在蓝图子类中配置：
+	 * Content/TopDown/Blueprints/BP_TopDownGameMode
+	 * 包括：DefaultPawnClass、PlayerControllerClass、HUDClass 等 */
 }

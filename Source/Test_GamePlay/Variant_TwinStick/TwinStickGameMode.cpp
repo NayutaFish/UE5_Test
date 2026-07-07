@@ -9,55 +9,58 @@
 
 void ATwinStickGameMode::BeginPlay()
 {
-	// create the UI widget if it hasn't already
+	// 创建 UI Widget
 	CreateUI();
 }
 
 void ATwinStickGameMode::EndPlay(EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
-	
-	// clear the combo timer
+
+	// 清除连击定时器
 	GetWorld()->GetTimerManager().ClearTimer(ComboTimer);
 }
 
+// 更新 UI 中的物品数量
 void ATwinStickGameMode::ItemUsed(int32 Value)
 {
-	// ensure the UI widget is available
+	// 确保 UI Widget 存在
 	if (!UIWidget)
 	{
 		CreateUI();
 	}
 
-	// update the UI
+	// 更新 UI
 	if (UIWidget)
 	{
 		UIWidget->UpdateItems(Value);
 	}
 }
 
+// 按基础分数 x 连击倍数增加分数，并更新连击
 void ATwinStickGameMode::ScoreUpdate(int32 Value)
 {
-	// multiply the base score by the combo multiplier and add it to the score
+	// 基础分数乘以连击倍数后累加
 	Score += Value * Combo;
 
-	// update the UI
+	// 更新 UI
 	if (UIWidget)
 	{
 		UIWidget->UpdateScore(Score);
 	}
 
-	// update the combo multiplier
+	// 更新连击倍数
 	ComboUpdate();
 }
 
+// 创建 HUD UI Widget 并添加到视口
 void ATwinStickGameMode::CreateUI()
 {
-	// avoid creating the UI multiple times
+	// 避免重复创建
 	if(UIWidget)
 		return;
 
-	// create the UI widget and add it to the viewport
+	// 创建 UI Widget 并添加到视口
 	UIWidget = CreateWidget<UTwinStickUI>(UGameplayStatics::GetPlayerController(GetWorld(), 0), UIWidgetClass);
 
 	if (UIWidget)
@@ -66,27 +69,28 @@ void ATwinStickGameMode::CreateUI()
 	}
 }
 
+// 累加连击计数，达到阈值后提升倍数
 void ATwinStickGameMode::ComboUpdate()
 {
-	// return
+	// 超过上限则返回
 	if (Combo > ComboCap)
 	{
 		return;
 	}
 
-	// update the combo increment
+	// 增加连击增量
 	++ComboIncrement;
 
-	// is it time to increase the multiplier?
+	// 是否该提升倍数了？
 	if (ComboIncrement > ComboIncrementMax)
 	{
-		// reset the combo increment
+		// 重置连击增量
 		ComboIncrement = 0;
 
-		// increase the combo multiplier
+		// 提升连击倍数
 		++Combo;
 
-		// update the UI
+		// 更新 UI
 		if (UIWidget)
 		{
 			UIWidget->UpdateCombo(Combo);
@@ -94,52 +98,54 @@ void ATwinStickGameMode::ComboUpdate()
 
 	}
 
-	// reset the cooldown timer
+	// 重置冷却定时器
 	ResetComboCooldown();
 }
 
+// 重置连击冷却定时器
 void ATwinStickGameMode::ResetComboCooldown()
 {
-	// reset the combo cooldown timer
+	// 设定连击冷却定时器
 	GetWorld()->GetTimerManager().SetTimer(ComboTimer, this, &ATwinStickGameMode::ResetCombo, ComboCooldown, false);
 }
 
+// 连击超时后降低倍数
 void ATwinStickGameMode::ResetCombo()
 {
-	// is the combo multiplier above min?
+	// 连击倍数是否大于 1？
 	if (Combo > 1)
 	{
-		// reset the combo increment
+		// 重置连击增量
 		ComboIncrement = 0;
 
-		// tick down the multiplier
+		// 降低倍数
 		--Combo;
 
-		// update the UI
+		// 更新 UI
 		if (UIWidget)
 		{
 			UIWidget->UpdateCombo(Combo);
 		}
 
-		// reset the cooldown timer
+		// 重置冷却定时器
 		ResetComboCooldown();
 	}
 }
 
 bool ATwinStickGameMode::CanSpawnNPCs()
 {
-	// is the NPC counter under the cap?
+	// NPC 数量是否低于上限？
 	return NPCCount < NPCCap;
 }
 
 void ATwinStickGameMode::IncreaseNPCs()
 {
-	// increase the NPC counter
+	// 增加 NPC 计数
 	++NPCCount;
 }
 
 void ATwinStickGameMode::DecreaseNPCs()
 {
-	// decrease the NPC counter
+	// 减少 NPC 计数
 	--NPCCount;
 }

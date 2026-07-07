@@ -7,25 +7,25 @@
 #include "TwinStickUI.generated.h"
 
 /**
- *  A simple Twin Stick Shooter UI widget
- *  Provides a blueprint interface to expose score values to the UI
+ *  双摇杆射击游戏的 UI Widget。
+ *  提供蓝图接口，供 C++ 更新分数、连击和物品数量。
  */
 UCLASS(abstract)
 class UTwinStickUI : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 public:
 
-	/** Blueprint handler to update the items counter */
+	/** 蓝图事件：更新物品计数 */
 	UFUNCTION(BlueprintImplementableEvent, Category="Score")
 	void UpdateItems(int32 Score);
 
-	/** Blueprint handler to update the score sub-widgets */
+	/** 蓝图事件：更新分数显示 */
 	UFUNCTION(BlueprintImplementableEvent, Category="Score")
 	void UpdateScore(int32 Score);
 
-	/** Blueprint handler to update the combo sub-widgets */
+	/** 蓝图事件：更新连击倍数显示 */
 	UFUNCTION(BlueprintImplementableEvent, Category="Score")
 	void UpdateCombo(int32 Combo);
 };

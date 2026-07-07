@@ -17,15 +17,15 @@ void ATwinStickPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// only spawn touch controls on local player controllers
+	// 仅在本地玩家控制器上生成触摸控件
 	if (IsLocalPlayerController() && ShouldUseTouchControls())
 	{
-		// spawn the mobile controls widget
+		// 生成移动端控制 Widget
 		MobileControlsWidget = CreateWidget<UUserWidget>(this, MobileControlsWidgetClass);
 
 		if (MobileControlsWidget)
 		{
-			// add the controls to the player screen
+			// 将控件添加到玩家屏幕
 			MobileControlsWidget->AddToPlayerScreen(0);
 
 		} else {
@@ -37,14 +37,15 @@ void ATwinStickPlayerController::BeginPlay()
 	}
 }
 
+// 为本地玩家添加增强输入映射上下文
 void ATwinStickPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	// only add IMCs for local player controllers
+	// 仅对本地玩家控制器添加 IMC
 	if (IsLocalPlayerController())
 	{
-		// Add Input Mapping Contexts
+		// 添加输入映射上下文
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 		{
 			for (UInputMappingContext* CurrentContext : DefaultMappingContexts)
@@ -52,7 +53,7 @@ void ATwinStickPlayerController::SetupInputComponent()
 				Subsystem->AddMappingContext(CurrentContext, 0);
 			}
 
-			// only add these IMCs if we're not using mobile touch input
+			// 非移动端时添加额外的映射上下文
 			if (!ShouldUseTouchControls())
 			{
 				for (UInputMappingContext* CurrentContext : MobileExcludedMappingContexts)
@@ -64,28 +65,30 @@ void ATwinStickPlayerController::SetupInputComponent()
 	}
 }
 
+// 附身 Pawn 时订阅其销毁事件
 void ATwinStickPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	// subscribe to the pawn's OnDestroyed delegate
+	// 订阅 Pawn 的 OnDestroyed 委托
 	InPawn->OnDestroyed.AddDynamic(this, &ATwinStickPlayerController::OnPawnDestroyed);
 }
 
+// 角色被销毁后在 PlayerStart 处重生
 void ATwinStickPlayerController::OnPawnDestroyed(AActor* DestroyedActor)
 {
-	// find the player start
+	// 查找 PlayerStart
 	TArray<AActor*> ActorList;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), ActorList);
 
 	if (ActorList.Num() > 0)
 	{
-		// spawn a character at the player start
+		// 在 PlayerStart 处生成新角色
 		const FTransform SpawnTransform = ActorList[0]->GetActorTransform();
 
 		if (ATwinStickCharacter* RespawnedCharacter = GetWorld()->SpawnActor<ATwinStickCharacter>(CharacterClass, SpawnTransform))
 		{
-			// possess the character
+			// 附身该角色
 			Possess(RespawnedCharacter);
 		}
 	}
@@ -93,6 +96,6 @@ void ATwinStickPlayerController::OnPawnDestroyed(AActor* DestroyedActor)
 
 bool ATwinStickPlayerController::ShouldUseTouchControls() const
 {
-	// are we on a mobile platform? Should we force touch?
+	// 是否在移动平台或强制触摸模式？
 	return SVirtualJoystick::ShouldDisplayTouchInterface() || bForceTouchControls;
 }

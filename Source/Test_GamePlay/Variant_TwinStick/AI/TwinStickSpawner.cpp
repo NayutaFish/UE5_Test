@@ -16,11 +16,12 @@ ATwinStickSpawner::ATwinStickSpawner()
 
 }
 
+// 初始化：获取 NavMesh 引用，设置批次生成定时器并立即生成第一批
 void ATwinStickSpawner::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	// find the recast navmesh actor on the level
+
+	// 查找场景中的 Recast NavMesh
 	TArray<AActor*> ActorList;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARecastNavMesh::StaticClass(), ActorList);
 
@@ -33,10 +34,10 @@ void ATwinStickSpawner::BeginPlay()
 
 	}
 
-	// set up the spawn timer
+	// 设置批次生成定时器
 	GetWorld()->GetTimerManager().SetTimer(SpawnGroupTimer, this, &ATwinStickSpawner::SpawnNPCGroup, SpawnGroupDelay, true);
 
-	// spawn the first group of NPCs
+	// 立即生成第一批 NPC
 	SpawnNPCGroup();
 }
 
@@ -44,17 +45,18 @@ void ATwinStickSpawner::EndPlay(EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 
-	// clear the spawn timers
+	// 清除生成定时器
 	GetWorld()->GetTimerManager().ClearTimer(SpawnGroupTimer);
 	GetWorld()->GetTimerManager().ClearTimer(SpawnNPCTimer);
 }
 
+// 检查 NPC 上限后开始生成新一批
 void ATwinStickSpawner::SpawnNPCGroup()
 {
-	// reset the group spawn counter
+	// 重置批次计数器
 	SpawnCount = 0;
 
-	// check if we're still under the max NPC cap
+	// 检查是否低于 NPC 上限
 	if (ATwinStickGameMode* GM = Cast<ATwinStickGameMode>(GetWorld()->GetAuthGameMode()))
 	{
 		if (GM->CanSpawnNPCs())
@@ -64,24 +66,25 @@ void ATwinStickSpawner::SpawnNPCGroup()
 	}
 }
 
+// 在导航网格上的随机可达点生成单个 NPC，并安排下一个 NPC 的生成
 void ATwinStickSpawner::SpawnNPC()
 {
 	FTransform SpawnTransform;
 
-	// find a random point around the spawner
+	// 在生成器周围寻找随机可达点
 	FVector SpawnLoc;
 	if (UNavigationSystemV1::K2_GetRandomReachablePointInRadius(GetWorld(), GetActorLocation(), SpawnLoc, SpawnRadius, NavData))
 	{
 		SpawnTransform.SetLocation(SpawnLoc);
 
-		// spawn the NPC
+		// 生成 NPC
 		ATwinStickNPC* NPC = GetWorld()->SpawnActor<ATwinStickNPC>(NPCClass, SpawnTransform);
 	}
 
-	// increase the spawn counter
+	// 增加生成计数
 	++SpawnCount;
 
-	// do we still have enemies left to spawn?
+	// 若本批还有剩余 NPC，设置延迟后继续生成
 	if (SpawnCount < SpawnGroupSize)
 	{
 		GetWorld()->GetTimerManager().SetTimer(SpawnNPCTimer, this, &ATwinStickSpawner::SpawnNPC, FMath::RandRange(MinSpawnDelay, MaxSpawnDelay), false);

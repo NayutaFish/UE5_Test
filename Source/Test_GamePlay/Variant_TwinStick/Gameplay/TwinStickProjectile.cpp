@@ -7,14 +7,15 @@
 #include "Components/StaticMeshComponent.h"
 #include "TwinStickNPC.h"
 
+// 构造函数：创建碰撞体、网格体和子弹移动组件
 ATwinStickProjectile::ATwinStickProjectile()
 {
  	PrimaryActorTick.bCanEverTick = true;
 
-	// this actor will be destroyed automatically once InitialLifeSpan expires
+	// 自动销毁生命周期
 	InitialLifeSpan = 2.0f;
 
-	// create the collision sphere and set it as the root component
+	// 创建碰撞球体并设为根组件
 	RootComponent = CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Collision Sphere"));
 
 	CollisionSphere->SetSphereRadius(35.0f);
@@ -23,13 +24,13 @@ ATwinStickProjectile::ATwinStickProjectile()
 	CollisionSphere->SetCollisionObjectType(ECC_WorldDynamic);
 	CollisionSphere->SetCollisionResponseToAllChannels(ECR_Block);
 
-	// create the mesh
+	// 创建网格体
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
 
 	Mesh->SetCollisionProfileName(FName("NoCollision"));
 
-	// create the projectile movement comp. No need to attach it because it's not a scene component
+	// 创建子弹移动组件（非 Scene Component，无需挂载）
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
 
 	ProjectileMovement->InitialSpeed = 2000.0f;
@@ -43,23 +44,25 @@ ATwinStickProjectile::ATwinStickProjectile()
 	ProjectileMovement->OnProjectileStop.AddDynamic(this, &ATwinStickProjectile::OnProjectileStop);
 }
 
+// 碰撞处理：击中 NPC 时造成伤害并销毁自身
 void ATwinStickProjectile::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 
-	// have we hit a NPC?
+	// 是否击中了 NPC？
 	if (ATwinStickNPC* NPC = Cast<ATwinStickNPC>(Other))
 	{
-		// tell the NPC it's been hit
+		// 通知 NPC 被击中
 		NPC->ProjectileImpact(FVector::ZeroVector);
 
-		// destroy this projectile
+		// 销毁子弹
 		Destroy();
 	}
 }
 
+// 子弹停止时立即销毁
 void ATwinStickProjectile::OnProjectileStop(const FHitResult& ImpactResult)
 {
-	// destroy this actor immediately
+	// 立即销毁
 	Destroy();
 }

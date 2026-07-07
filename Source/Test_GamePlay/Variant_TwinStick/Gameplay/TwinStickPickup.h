@@ -10,27 +10,28 @@ class USphereComponent;
 class UStaticMeshComponent;
 
 /**
- *  A simple pickup for a Twin Stick Shooter game
+ *  双摇杆射击游戏的拾取物。
+ *  玩家触碰后可获得一个 AoE 物品。
  */
 UCLASS(abstract)
 class ATwinStickPickup : public AActor
 {
 	GENERATED_BODY()
-	
-	/** Pickup collision sphere */
+
+	/** 拾取物碰撞球体 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	USphereComponent* CollisionSphere;
 
-	/** Provides visual representation for the pickup */
+	/** 拾取物视觉效果 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Mesh;
 
-public:	
+public:
 
-	/** Constructor */
+	/** 构造函数 */
 	ATwinStickPickup();
 
-	/** Collision handling */
+	/** 碰撞处理：玩家触碰时拾取 */
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 };

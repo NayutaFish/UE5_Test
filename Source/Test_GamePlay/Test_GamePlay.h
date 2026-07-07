@@ -4,5 +4,6 @@
 
 #include "CoreMinimal.h"
 
-/** Main log category used across the project */
+/* 声明这个项目的日志分类
+ * 用法：UE_LOG(LogTest_GamePlay, Warning, TEXT("消息")); */
 DECLARE_LOG_CATEGORY_EXTERN(LogTest_GamePlay, Log, All);

@@ -9,50 +9,50 @@
 class UStrategyUI;
 
 /**
- *  Simple strategy game HUD
- *  Draws the selection box and unit selected overlays
+ * 策略游戏的简单 HUD
+ * 负责绘制选择框和选中单位的叠加显示
  */
 UCLASS(abstract)
 class AStrategyHUD : public AHUD
 {
 	GENERATED_BODY()
-	
+
 protected:
 
-	/** Pointer to the UI user widget */
+	/** UI 用户控件指针 */
 	UPROPERTY()
 	TObjectPtr<UStrategyUI> UIWidget;
 
-	/** Type of UI Widget to spawn */
+	/** UI 控件类（用于生成实例） */
 	UPROPERTY(EditAnywhere, Category="UI")
 	TSubclassOf<UStrategyUI> UIWidgetClass;
 
-	/** If true, the HUD will draw the selection box */
+	/** 是否绘制选择框 */
 	bool bDrawBox = false;
 
-	/** Starting coords of the selection box */
+	/** 选择框的起始坐标 */
 	FVector2D BoxStart;
 
-	/** Width and height of the selection box */
+	/** 选择框的宽高 */
 	FVector2D BoxSize;
 
-	/** Current position of the selection box */
+	/** 选择框的当前位置 */
 	FVector2D BoxCurrentPosition;
 
-	/** Color of the selection box */
+	/** 选择框的颜色 */
 	UPROPERTY(EditAnywhere, Category="UI")
 	FLinearColor SelectionBoxColor;
 
 public:
 
-	/** Initialization */
+	/** 初始化 */
 	virtual void BeginPlay() override;
 
-	/** Updates the drag selection box */
+	/** 更新拖拽选择框的状态 */
 	void DragSelectUpdate(FVector2D Start, FVector2D WidthAndHeight, FVector2D CurrentPosition, bool bDraw);
 
 protected:
 
-	/** Draws the HUD */
+	/** 绘制 HUD */
 	virtual void DrawHUD() override;
 };
