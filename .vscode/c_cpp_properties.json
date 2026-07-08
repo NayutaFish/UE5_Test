@@ -2,60 +2,22 @@
     "configurations": [
         {
             "name": "Test_GamePlayEditor Editor Win64 Development (Test_GamePlay)",
-            "compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "compilerPath": "E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
             "cStandard": "c17",
             "cppStandard": "c++20",
             "intelliSenseMode": "msvc-x64",
-            "includePath": [
-                "E:\\project\\UE\\demo0705\\Source\\**",
-                "E:\\project\\UE\\demo0705\\Intermediate\\Build\\Win64\\UnrealEditor\\Inc\\**",
-                "E:\\tool\\epic\\UE_5.8\\Engine\\Source\\**",
-                "E:\\tool\\epic\\UE_5.8\\Engine\\Intermediate\\Build\\Win64\\UnrealEditor\\Inc\\**"
-            ],
-            "forcedInclude": [
-                "E:\\project\\UE\\demo0705\\Intermediate\\Build\\Win64\\x64\\UnrealEditor\\Development\\Test_GamePlay\\Definitions.Test_GamePlay.h",
-                "E:\\project\\UE\\demo0705\\Intermediate\\Build\\Win64\\x64\\Test_GamePlayEditor\\Development\\UnrealEd\\SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h"
-            ],
-            "browse": {
-                "path": [
-                    "E:\\project\\UE\\demo0705\\Source",
-                    "E:\\project\\UE\\demo0705\\Intermediate\\Build\\Win64\\UnrealEditor\\Inc",
-                    "E:\\tool\\epic\\UE_5.8\\Engine\\Source",
-                    "E:\\tool\\epic\\UE_5.8\\Engine\\Intermediate\\Build\\Win64\\UnrealEditor\\Inc"
-                ],
-                "limitSymbolsToIncludedHeaders": true
-            },
             "compileCommands": [
-                "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay.json"
+                "E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay.json"
             ]
         },
         {
             "name": "Win32",
-            "compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "compilerPath": "E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
             "cStandard": "c17",
             "cppStandard": "c++20",
             "intelliSenseMode": "msvc-x64",
-            "includePath": [
-                "E:\\project\\UE\\demo0705\\Source\\**",
-                "E:\\project\\UE\\demo0705\\Intermediate\\Build\\Win64\\UnrealEditor\\Inc\\**",
-                "E:\\tool\\epic\\UE_5.8\\Engine\\Source\\**",
-                "E:\\tool\\epic\\UE_5.8\\Engine\\Intermediate\\Build\\Win64\\UnrealEditor\\Inc\\**"
-            ],
-            "forcedInclude": [
-                "E:\\project\\UE\\demo0705\\Intermediate\\Build\\Win64\\x64\\UnrealEditor\\Development\\Test_GamePlay\\Definitions.Test_GamePlay.h",
-                "E:\\project\\UE\\demo0705\\Intermediate\\Build\\Win64\\x64\\Test_GamePlayEditor\\Development\\UnrealEd\\SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h"
-            ],
-            "browse": {
-                "path": [
-                    "E:\\project\\UE\\demo0705\\Source",
-                    "E:\\project\\UE\\demo0705\\Intermediate\\Build\\Win64\\UnrealEditor\\Inc",
-                    "E:\\tool\\epic\\UE_5.8\\Engine\\Source",
-                    "E:\\tool\\epic\\UE_5.8\\Engine\\Intermediate\\Build\\Win64\\UnrealEditor\\Inc"
-                ],
-                "limitSymbolsToIncludedHeaders": true
-            },
             "compileCommands": [
-                "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Default.json"
+                "E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Default.json"
             ]
         }
     ],

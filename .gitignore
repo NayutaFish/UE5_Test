@@ -79,3 +79,12 @@ DerivedDataCache/*
 .mcp.json
 mcp.json
 *.mcp.json
+# VSCode local/generated files
+.vscode/
+*.code-workspace
+
+# Rider / JetBrains
+.idea/
+
+# Visual Studio Code C++ cache
+.vscode/ipch/
