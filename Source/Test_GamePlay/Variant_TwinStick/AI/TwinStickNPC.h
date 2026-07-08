@@ -10,9 +10,8 @@ class ATwinStickPickup;
 class ATwinStickNPCDestruction;
 
 /**
- *  A simple enemy NPC for a Twin Stick Shooter game
- *  It's driven by an AI Controller running a behavior tree
- *  Awards points and randomly spawns pickups on death
+ *  双摇杆射击游戏的敌方 NPC。
+ *  由 AI Controller 驱动，销毁时奖励分数并随机生成拾取物。
  */
 UCLASS(abstract)
 class ATwinStickNPC : public ACharacter
@@ -21,61 +20,61 @@ class ATwinStickNPC : public ACharacter
 
 protected:
 
-	/** Score to award when this NPC is destroyed */
+	/** 销毁时奖励的分数 */
 	UPROPERTY(EditAnywhere, Category="Score", meta=(ClampMin = 0, ClampMax = 100))
 	int32 Score = 1;
 
-	/** Percentage chance of spawning a pickup */
+	/** 生成拾取物的概率百分比 */
 	UPROPERTY(EditAnywhere, Category="Pickup", meta=(ClampMin = 0, ClampMax = 100))
 	int32 PickupSpawnChance = 10;
 
-	/** Type of pickup to spawn on death */
+	/** 死亡时生成的拾取物类型 */
 	UPROPERTY(EditAnywhere, Category="Pickup")
 	TSubclassOf<ATwinStickPickup> PickupClass;
 
-	/** Type of destruction proxy to spawn on death */
+	/** 死亡时生成的销毁代理类型 */
 	UPROPERTY(EditAnywhere, Category="Destruction")
 	TSubclassOf<ATwinStickNPCDestruction> DestructionProxyClass;
 
-	/** Time to wait after this NPC is hit before destroying it */
+	/** 被击中后延迟销毁的时间 */
 	UPROPERTY(EditAnywhere, Category="Pickup", meta=(ClampMin = 0, ClampMax = 5, Units = "s"))
 	float DeferredDestructionTime = 0.1f;
 
-	/** Deferred destruction timer */
+	/** 延迟销毁定时器 */
 	FTimerHandle DestructionTimer;
 
 public:
 
-	/** If true, this NPC has already been hit by a projectile and is being destroyed. Exposed to BP so it can be read by StateTree */
+	/** 是否已被子弹击中并正在销毁，暴露给蓝图供 StateTree 读取 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="NPC")
 	bool bHit = false;
 
 public:
 
-	/** Constructor */
+	/** 构造函数 */
 	ATwinStickNPC();
 
 protected:
 
-	/** Gameplay Initialization */
+	/** 游戏初始化 */
 	virtual void BeginPlay() override;
 
-	/** Gameplay cleanup */
+	/** 游戏清理 */
 	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
 
-	/** Handle destruction */
+	/** 销毁时处理 */
 	virtual void Destroyed() override;
 
-	/** Collision handling */
+	/** 碰撞处理 */
 	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
 public:
 
-	/** Tells the NPC to process a projectile impact */
+	/** 处理子弹撞击 */
 	void ProjectileImpact(const FVector& ForwardVector);
 
 protected:
 
-	/** Called from timer to complete the destruction process for this NPC */
+	/** 定时器回调，完成 NPC 销毁流程 */
 	void DeferredDestroy();
 };

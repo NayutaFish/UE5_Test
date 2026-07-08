@@ -10,17 +10,17 @@ void AStrategyHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// spawn the UI widget
+	// 生成 UI 控件
 	UIWidget = CreateWidget<UStrategyUI>(GetOwningPlayerController(), UIWidgetClass);
 	check(UIWidget);
 
-	// add the UI widget to the screen
+	// 将 UI 控件添加到视口
 	UIWidget->AddToViewport(0);
 }
 
 void AStrategyHUD::DragSelectUpdate(FVector2D Start, FVector2D WidthAndHeight, FVector2D CurrentPosition, bool bDraw)
 {
-	// copy the selection box data
+	// 更新选择框数据
 	bDrawBox = bDraw;
 	BoxStart = Start;
 	BoxSize = WidthAndHeight;
@@ -30,50 +30,50 @@ void AStrategyHUD::DragSelectUpdate(FVector2D Start, FVector2D WidthAndHeight, F
 
 void AStrategyHUD::DrawHUD()
 {
-	// draw all debug information, etc.
+	// 绘制所有调试信息等
 	Super::DrawHUD();
 
-	// ensure we have a valid player controller
+	// 确保有有效的玩家控制器
 	if (AStrategyPlayerController* PC = Cast<AStrategyPlayerController>(GetOwningPlayerController()))
 	{
-		// draw the selection box
+		// 绘制选择框
 		if (bDrawBox)
 		{
 			DrawRect(SelectionBoxColor, BoxStart.X, BoxStart.Y, BoxSize.X, BoxSize.Y);
 
-			// get all the units in the selection box
+			// 获取选择框中的所有单位
 			TArray<AStrategyUnit*> BoxedUnits;
 			GetActorsInSelectionRectangle(BoxStart, BoxCurrentPosition, BoxedUnits, true);
 
-			// update the unit selection on the player controller
+			// 在玩家控制器上更新单位选择
 			PC->DragSelectUnits(BoxedUnits);
 		}
 
-		// get the currently selected units
+		// 获取当前选中的单位列表
 		TArray<AStrategyUnit*> SelectedUnits = PC->GetSelectedUnits();
 
-		// update the selection count on the UI widget
+		// 更新 UI 上的选中计数
 		if (UIWidget)
 		{
 			UIWidget->SetSelectedUnitsCount(SelectedUnits.Num());
 		}
 
-		// process each selected unit
+		// 处理每个选中的单位
 		for (AStrategyUnit* CurrentUnit : SelectedUnits)
 		{
 			if (IsValid(CurrentUnit))
 			{
-				// project the unit's location to screen coordinates
+				// 将单位的坐标投影到屏幕坐标
 				FVector2D ScreenCoords;
 
 				if (PC->ProjectWorldLocationToScreen(CurrentUnit->GetActorLocation(), ScreenCoords, true))
 				{
-					// draw a selection string near the unit
+					// 在单位附近绘制选中标识文字
 					const FString SelectionString = "Selected";
 					DrawText(SelectionString, FColor::White, ScreenCoords.X - 25.0f, ScreenCoords.Y + 25.0f, nullptr, 1.5f);
 				}
 			}
-			
+
 		}
 	}
 

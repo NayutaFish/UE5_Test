@@ -23,7 +23,7 @@
 
 AStrategyPlayerController::AStrategyPlayerController()
 {
-	// mouse cursor should always be shown
+	// 始终显示鼠标光标
 	bShowMouseCursor = true;
 }
 
@@ -31,18 +31,18 @@ void AStrategyPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// only spawn touch controls on local player controllers
+	// 仅在本地玩家控制器上生成触控控件
 	if (IsLocalPlayerController() && ShouldUseTouchControls())
 	{
-		// spawn the mobile controls widget
+		// 生成移动端触控控件小部件
 		MobileControlsWidget = CreateWidget<UStrategyTouchControls>(this, MobileControlsWidgetClass);
 
 		if (MobileControlsWidget)
 		{
-			// add the controls to the player screen
+			// 将触控控件添加到玩家屏幕
 			MobileControlsWidget->AddToPlayerScreen(0);
 
-			// set the PC pointer on the mobile controls widget
+			// 设置移动端控件的玩家控制器指针
 			MobileControlsWidget->SetPlayerController(this);
 
 		} else {
@@ -59,13 +59,13 @@ void AStrategyPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	// only set up input on local player controllers
+	// 仅在本地玩家控制器上设置输入绑定
 	if (IsLocalPlayerController())
 	{
-		// add the input mapping context
+		// 添加输入映射上下文
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 		{
-			// choose the context based on the input mode
+			// 根据输入模式选择映射上下文
 			UInputMappingContext* ChosenContext = nullptr;
 
 			if (ShouldUseTouchControls())
@@ -80,15 +80,15 @@ void AStrategyPlayerController::SetupInputComponent()
 			Subsystem->AddMappingContext(ChosenContext, 0);
 		}
 
-		// bind the input mappings
+		// 绑定输入映射
 		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 		{
-			// Camera
+			// 摄像机控制
 			EnhancedInputComponent->BindAction(MoveCameraAction, ETriggerEvent::Triggered, this, &AStrategyPlayerController::MoveCamera);
 			EnhancedInputComponent->BindAction(ZoomCameraAction, ETriggerEvent::Triggered, this, &AStrategyPlayerController::ZoomCamera);
 			EnhancedInputComponent->BindAction(ResetCameraAction, ETriggerEvent::Triggered, this, &AStrategyPlayerController::ResetCamera);
 
-			// Mouse Interaction
+			// 鼠标交互
 			EnhancedInputComponent->BindAction(SelectHoldAction, ETriggerEvent::Started, this, &AStrategyPlayerController::SelectHoldStarted);
 			EnhancedInputComponent->BindAction(SelectHoldAction, ETriggerEvent::Triggered, this, &AStrategyPlayerController::SelectHoldTriggered);
 			EnhancedInputComponent->BindAction(SelectHoldAction, ETriggerEvent::Completed, this, &AStrategyPlayerController::SelectHoldCompleted);
@@ -105,7 +105,7 @@ void AStrategyPlayerController::SetupInputComponent()
 
 			EnhancedInputComponent->BindAction(InteractClickAction, ETriggerEvent::Completed, this, &AStrategyPlayerController::InteractClick);
 
-			// Touch Interaction
+			// 触控交互
 			EnhancedInputComponent->BindAction(TouchPrimaryHoldAction, ETriggerEvent::Started, this, &AStrategyPlayerController::TouchPrimaryHoldStarted);
 			EnhancedInputComponent->BindAction(TouchPrimaryHoldAction, ETriggerEvent::Triggered, this, &AStrategyPlayerController::TouchPrimaryHoldTriggered);
 			EnhancedInputComponent->BindAction(TouchPrimaryHoldAction, ETriggerEvent::Completed, this, &AStrategyPlayerController::TouchPrimaryHoldCompleted);
@@ -122,17 +122,17 @@ void AStrategyPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	// ensure we have the right pawn type
+	// 确保获得正确的 Pawn 类型
 	ControlledCameraPawn = Cast<AStrategyPawn>(InPawn);
 	check(ControlledCameraPawn);
 
-	// set the zoom level from the pawn's camera
+	// 从摄像机的正交宽度初始化缩放级别
 	DefaultZoom = CameraZoom = ControlledCameraPawn->GetCamera()->OrthoWidth;
 
-	// cast the HUD pointer
+	// 获取 HUD 指针
 	StrategyHUD = Cast<AStrategyHUD>(GetHUD());
 
-	// if we have a touch controls widget, sync the camera zoom
+	// 如果有触控控件小部件，同步摄像机缩放
 	if (MobileControlsWidget)
 	{
 		MobileControlsWidget->BP_SetZoomPercentage(GetDefaultZoomPercentage());
@@ -141,19 +141,19 @@ void AStrategyPlayerController::OnPossess(APawn* InPawn)
 
 void AStrategyPlayerController::DragSelectUnits(const TArray<AStrategyUnit*>& Units)
 {
-	// do we have units in the list?
+	// 检查是否选中了单位
 	if (Units.Num() > 0)
 	{
-		// ensure any previous units are deselected
+		// 先取消选择所有当前已选单位
 		DoDeselectAllUnitsCommand();
 
-		// select each new unit
+		// 逐个选中新单位
 		for (AStrategyUnit* CurrentUnit : Units)
 		{
-			// add the unit to the selection list
+			// 将单位添加到选中列表
 			ControlledUnits.Add(CurrentUnit);
 
-			// select the unit
+			// 通知单位已被选中
 			CurrentUnit->UnitSelected();
 		}
 
@@ -161,7 +161,7 @@ void AStrategyPlayerController::DragSelectUnits(const TArray<AStrategyUnit*>& Un
 	else
 	{
 
-		// release any currently selected units since nothing is on the box
+		// 框选区域没有单位，取消所有选择
 		if (ControlledUnits.Num() > 0)
 		{
 			DoDeselectAllUnitsCommand();
@@ -183,7 +183,7 @@ float AStrategyPlayerController::GetDefaultZoomPercentage() const
 
 bool AStrategyPlayerController::ShouldUseTouchControls() const
 {
-	// are we on a mobile platform? Should we force touch?
+	// 是否在移动端平台？或强制使用触控？
 	return SVirtualJoystick::ShouldDisplayTouchInterface() || bForceTouchControls;
 }
 
@@ -191,21 +191,21 @@ void AStrategyPlayerController::MoveCamera(const FInputActionValue& Value)
 {
 	FVector2D InputVector = Value.Get<FVector2D>();
 
-	// get the forward input component vector
+	// 获取前方向输入分量
 	FRotator ForwardRot = GetControlRotation();
 	ForwardRot.Pitch = 0.0f;
 
-	// get the right input component vector
+	// 获取右方向输入分量
 	FRotator RightRot = GetControlRotation();
 	RightRot.Pitch = 0.0f;
 	RightRot.Roll = 0.0f;
 
-	// add the forward input
+	// 添加前方向移动输入
 	if (ControlledCameraPawn)
 	{
 		ControlledCameraPawn->AddMovementInput(ForwardRot.RotateVector(FVector::ForwardVector), InputVector.X + InputVector.Y);
 
-		// add the right input
+		// 添加右方向移动输入
 		ControlledCameraPawn->AddMovementInput(RightRot.RotateVector(FVector::RightVector), InputVector.X - InputVector.Y);
 	}
 }
@@ -222,29 +222,29 @@ void AStrategyPlayerController::ResetCamera(const FInputActionValue& Value)
 
 void AStrategyPlayerController::SelectHoldStarted(const FInputActionValue& Value)
 {
-	// save the box selection start position
+	// 保存框选起始位置
 	StartingBoxSelectionPosition = GetMouseLocationForPlayer();
 
 }
 
 void AStrategyPlayerController::SelectHoldTriggered(const FInputActionValue& Value)
 {
-	// get the current mouse position
+	// 获取当前鼠标位置
 	FVector2D SelectionPosition = GetMouseLocationForPlayer();
 
-	// calculate the size of the selection box
+	// 计算选择框的大小
 	FVector2D SelectionSize = SelectionPosition - StartingBoxSelectionPosition;
 
-	// update the selection box on the HUD
+	// 更新 HUD 上的选择框显示
 	if (StrategyHUD)
 	{
 		StrategyHUD->DragSelectUpdate(StartingBoxSelectionPosition, SelectionSize, SelectionPosition, true);
-	}	
+	}
 }
 
 void AStrategyPlayerController::SelectHoldCompleted(const FInputActionValue& Value)
 {
-	// reset the drag box on the HUD
+	// 重置 HUD 上的选择框
 	if (StrategyHUD)
 	{
 		StrategyHUD->DragSelectUpdate(FVector2D::ZeroVector, FVector2D::ZeroVector, FVector2D::ZeroVector, false);
@@ -253,24 +253,24 @@ void AStrategyPlayerController::SelectHoldCompleted(const FInputActionValue& Val
 
 void AStrategyPlayerController::SelectClick(const FInputActionValue& Value)
 {
-	// get the cursor location
+	// 获取光标位置
 	FVector CursorLocation;
 
 	if (GetLocationUnderCursor(CursorLocation))
 	{
-		// select at the cursor
+		// 在光标处执行选择
 		DoSelectCommand(CursorLocation, false);
 	}
 }
 
 void AStrategyPlayerController::SelectClickAdditive(const FInputActionValue& Value)
 {
-	// get the cursor location
+	// 获取光标位置
 	FVector CursorLocation;
 
 	if (GetLocationUnderCursor(CursorLocation))
 	{
-		// additive select at the cursor
+		// 在光标处执行附加选择
 		DoSelectCommand(CursorLocation, true);
 	}
 }
@@ -283,65 +283,65 @@ void AStrategyPlayerController::SelectAllDoubleClick(const FInputActionValue& Va
 void AStrategyPlayerController::InteractHoldStarted(const FInputActionValue& Value)
 {
 
-	// save the starting interaction position
+	// 保存交互起始位置
 	StartingDragScrollPosition = GetMouseLocationForPlayer();
 }
 
 void AStrategyPlayerController::InteractHoldTriggered(const FInputActionValue& Value)
 {
-	// do a drag scroll 
+	// 执行拖拽滚动
 	DoCameraDragScrollCommand(GetMouseLocationForPlayer());
 }
 
 void AStrategyPlayerController::InteractClick(const FInputActionValue& Value)
 {
-	// get the cursor location
+	// 获取光标位置
 	FVector CursorLocation;
 
-	// do we have a valid interaction location under the cursor?
+	// 光标下方是否有有效的交互位置？
 	if (GetLocationUnderCursor(CursorLocation))
 	{
-		// move the selected units to the target location
+		// 将选中的单位移动到目标位置
 		DoMoveUnitsCommand(CursorLocation);
 	}
 }
 
 void AStrategyPlayerController::TouchPrimaryHoldStarted(const FInputActionValue& Value)
 {
-	// save the camera drag screen coords
+	// 保存拖拽滚动的屏幕坐标
 	StartingDragScrollPosition = Value.Get<FVector2D>();
 
-	
+
 }
 
 void AStrategyPlayerController::TouchPrimaryHoldTriggered(const FInputActionInstance& Instance)
 {
 	FVector2D InputVector = Instance.GetValue().Get<FVector2D>();
 
-	// update the box select start position
+	// 更新框选起始位置
 	StartingBoxSelectionPosition = InputVector;
 
 	if (Instance.GetElapsedTime() > TouchDragScrollHoldTime)
 	{
 		DoCameraDragScrollCommand(InputVector);
 
-		// save the game time
+		// 记录本次游戏时间
 		LastTouchDragScrollTime = GetWorld()->GetTimeSeconds();
 	}
 }
 
 void AStrategyPlayerController::TouchPrimaryHoldCompleted(const FInputActionValue& Value)
 {
-	// ensure we don't trigger a tap input right after we finish a drag scroll
+	// 确保拖拽滚动结束后不会立即触发点击输入
 	if (GetWorld()->GetTimeSeconds() - LastTouchDragScrollTime > 0.1f)
 	{
-		// get the touch location in world space
+		// 获取触控位置的世界坐标
 		FVector TouchLocation = ProjectTouchPointToWorldSpace();
 
-		// try to do a select command
+		// 尝试执行选择命令
 		if (!DoSelectCommand(TouchLocation, true))
 		{
-			// if nothing was selected, do a move units command instead
+			// 如果没有选中任何单位，则执行移动单位命令
 			DoMoveUnitsCommand(TouchLocation);
 		}
 	}
@@ -349,38 +349,38 @@ void AStrategyPlayerController::TouchPrimaryHoldCompleted(const FInputActionValu
 
 void AStrategyPlayerController::TouchSecondaryTriggered(const FInputActionValue& Value)
 {
-	// get the touch 2 screen coords
+	// 获取第二根手指的屏幕坐标
 	FVector2D SelectionPosition = Value.Get<FVector2D>();
 
-	// calculate the size of the selection box
+	// 计算选择框的大小
 	FVector2D SelectionSize = SelectionPosition - StartingBoxSelectionPosition;
 
-	// update the selection box on the HUD
+	// 更新 HUD 上的选择框
 	if (StrategyHUD)
 	{
 		StrategyHUD->DragSelectUpdate(StartingBoxSelectionPosition, SelectionSize, SelectionPosition, true);
 	}
-		
+
 }
 
 void AStrategyPlayerController::TouchSecondaryCompleted(const FInputActionValue& Value)
 {
 	if (StrategyHUD)
 	{
-		// hide the selection box
+		// 隐藏选择框
 		StrategyHUD->DragSelectUpdate(FVector2D::ZeroVector, FVector2D::ZeroVector, FVector2D::ZeroVector, false);
 	}
 }
 
 bool AStrategyPlayerController::DoSelectCommand(const FVector& SelectLocation, bool bAdditiveSelection)
 {
-	// deselect any units unless this is an additive selection
+	// 如果不是附加选择模式，先取消所有选择
 	if (!bAdditiveSelection)
 	{
 		DoDeselectAllUnitsCommand();
 	}
 
-	// do an overlap test at the cursor location
+	// 在光标位置执行重叠检测
 	TArray<FOverlapResult> OutOverlaps;
 
 	FCollisionShape CollisionSphere;
@@ -393,65 +393,65 @@ bool AStrategyPlayerController::DoSelectCommand(const FVector& SelectLocation, b
 
 	if (GetWorld()->OverlapMultiByObjectType(OutOverlaps, SelectLocation, FQuat::Identity, ObjectParams, CollisionSphere, QueryParams))
 	{
-		// find the first unit we've overlapped
+		// 查找重叠到的第一个单位
 		for (const FOverlapResult& CurrentOverlap : OutOverlaps)
 		{
 			if (AStrategyUnit* CurrentUnit = Cast<AStrategyUnit>(CurrentOverlap.GetActor()))
 			{
-				// is this unit already selected?
+				// 该单位是否已被选中？
 				if (ControlledUnits.Contains(CurrentUnit))
 				{
-					// deselect the unit
+					// 取消选中该单位
 					ControlledUnits.Remove(CurrentUnit);
 
 					CurrentUnit->UnitDeselected();
 				}
 				else
 				{
-					// select the unit
+					// 选中该单位
 					ControlledUnits.Add(CurrentUnit);
 
 					CurrentUnit->UnitSelected();
 				}
 
-				// found a unit
+				// 找到单位，返回成功
 				return true;
 			}
 		}
 	}
 
-	// didn't find a unit
+	// 未找到单位，返回失败
 	return false;
 }
 
 void AStrategyPlayerController::DoSelectAllUnitsOnScreenCommand()
 {
-	// get all units on the level
+	// 获取关卡中的所有单位
 	TArray<AActor*> Units;
 
 	UGameplayStatics::GetAllActorsOfClass(this, AStrategyUnit::StaticClass(), Units);
 
-	// process each unit
+	// 逐个处理单位
 	for (AActor* CurrentActor : Units)
 	{
 		if (AStrategyUnit* CurrentUnit = Cast<AStrategyUnit>(CurrentActor))
 		{
-			// is the unit is not already selected, and is on screen?
+			// 如果单位尚未被选中且在屏幕上可见
 			if (!ControlledUnits.Contains(CurrentUnit) && CurrentUnit->WasRecentlyRendered(0.2f))
 			{
-				// select the unit
+				// 选中该单位
 				ControlledUnits.Add(CurrentUnit);
 
 				CurrentUnit->UnitSelected();
 			}
 		}
-		
+
 	}
 }
 
 void AStrategyPlayerController::DoDeselectAllUnitsCommand()
 {
-	// deselect each unit
+	// 取消每个单位的选中状态
 	for (AStrategyUnit* CurrentUnit : ControlledUnits)
 	{
 		if (IsValid(CurrentUnit))
@@ -460,39 +460,39 @@ void AStrategyPlayerController::DoDeselectAllUnitsCommand()
 		}
 	}
 
-	// clear the selection list
+	// 清空选择列表
 	ControlledUnits.Empty();
 }
 
 void AStrategyPlayerController::DoToggleSelectAllUnitsCommand()
 {
-	// do we have units selected?
+	// 当前是否有已选单位？
 	if (ControlledUnits.Num() > 0)
 	{
-		// deselect all units
+		// 取消全选
 		DoDeselectAllUnitsCommand();
 	}
 	else
 	{
-		// select all units on screen
+		// 选中屏幕上所有单位
 		DoSelectAllUnitsOnScreenCommand();
 	}
 }
 
 void AStrategyPlayerController::DoCameraDragScrollCommand(const FVector2D& CurrentCursorPosition)
 {
-	// subtract the starting position from the cursor to find the on-screen movement delta
+	// 计算起始位置到当前位置的屏幕移动偏移量
 	FVector2D MoveDelta = StartingDragScrollPosition - CurrentCursorPosition;
 
-	// rotate the movement delta to match the isometric perspective
+	// 旋转移动偏移量以适应等距视角
 	const FRotator IsoRotation(0.0f, -45.0f, 0.0f);
 
 	FVector RotatedDelta = IsoRotation.RotateVector(FVector(MoveDelta.X, MoveDelta.Y, 0.0f));
 
-	// apply drag
+	// 应用拖拽倍率
 	RotatedDelta *= DragMultiplier;
 
-	// apply the offset to the camera pawn
+	// 将偏移应用到摄像机 Pawn
 	if (ControlledCameraPawn)
 	{
 		ControlledCameraPawn->AddActorWorldOffset(RotatedDelta);
@@ -503,10 +503,10 @@ void AStrategyPlayerController::DoMoveUnitsCommand(const FVector& GoalLocation)
 {
 	if (ControlledUnits.Num() > 0)
 	{
-		// find the closest unit to the goal
+		// 找到距离目标位置最近的已选单位
 		AStrategyUnit* ClosestUnit = GetClosestSelectedUnitToLocation(GoalLocation);
 
-		// tell each unit to move to the location
+		// 通知每个单位移动到目标位置
 		for (AStrategyUnit* CurrentUnit : ControlledUnits)
 		{
 			if (IsValid(CurrentUnit))
@@ -515,26 +515,26 @@ void AStrategyPlayerController::DoMoveUnitsCommand(const FVector& GoalLocation)
 			}
 		}
 
-		// show positive cursor feedback
+		// 显示正向光标反馈
 		BP_CursorFeedback(GoalLocation, true);
 
 	}
 	else
 	{
-		// no units selected, so just show negative cursor feedback
+		// 没有选中单位，显示负向光标反馈
 		BP_CursorFeedback(GoalLocation, false);
 	}
 }
 
 void AStrategyPlayerController::DoCameraModifyZoomCommand(float ZoomDelta)
 {
-	// add the delta
+	// 累加缩放增量
 	CameraZoom += ZoomDelta;
 
-	// clamp between min and max
+	// 限制在最小和最大缩放之间
 	CameraZoom = FMath::Clamp(CameraZoom, MinZoomLevel, MaxZoomLevel);
 
-	// set the zoom on the camera pawn
+	// 将缩放值应用到摄像机 Pawn
 	if (ControlledCameraPawn)
 	{
 		ControlledCameraPawn->SetZoomModifier(CameraZoom);
@@ -543,10 +543,10 @@ void AStrategyPlayerController::DoCameraModifyZoomCommand(float ZoomDelta)
 
 void AStrategyPlayerController::DoCameraResetZoomCommand()
 {
-	// reset to default zoom
+	// 重置为默认缩放
 	CameraZoom = DefaultZoom;
 
-	// set the zoom on the camera pawn
+	// 将缩放值应用到摄像机 Pawn
 	if (ControlledCameraPawn)
 	{
 		ControlledCameraPawn->SetZoomModifier(CameraZoom);
@@ -555,10 +555,10 @@ void AStrategyPlayerController::DoCameraResetZoomCommand()
 
 void AStrategyPlayerController::DoCameraSetZoomPercentageCommand(float Percentage)
 {
-	// lerp between min and max zoom
+	// 在最小和最大缩放之间插值
 	CameraZoom = FMath::Lerp(MinZoomLevel, MaxZoomLevel, FMath::Clamp(Percentage, 0.0f, 1.0f));
 
-	// set the zoom on the camera pawn
+	// 将缩放值应用到摄像机 Pawn
 	if (ControlledCameraPawn)
 	{
 		ControlledCameraPawn->SetZoomModifier(CameraZoom);
@@ -567,25 +567,25 @@ void AStrategyPlayerController::DoCameraSetZoomPercentageCommand(float Percentag
 
 AStrategyUnit* AStrategyPlayerController::GetClosestSelectedUnitToLocation(FVector TargetLocation)
 {
-	// closest unit and distance
+	// 最近单位及其距离
 	AStrategyUnit* OutUnit = nullptr;
 	float Closest = 0.0f;
 
-	// process each unit on the list
+	// 遍历已选单位列表
 	for (AStrategyUnit* CurrentUnit : ControlledUnits)
 	{
 		if (IsValid(CurrentUnit))
 		{
-			// have we selected a unit already?
+			// 是否已选中了一个单位？
 			if (OutUnit != nullptr)
 			{
-				// calculate the squared distance to the target location
+				// 计算到目标位置的平方距离
 				float Dist = FVector::DistSquared2D(TargetLocation, CurrentUnit->GetActorLocation());
 
-				// is this unit closer?
+				// 这个单位更近吗？
 				if (Dist < Closest)
 				{
-					// update the closest unit and distance
+					// 更新最近单位和距离
 					OutUnit = CurrentUnit;
 					Closest = Dist;
 				}
@@ -594,23 +594,23 @@ AStrategyUnit* AStrategyPlayerController::GetClosestSelectedUnitToLocation(FVect
 			else
 			{
 
-				// no previously selected unit, so use this one
+				// 尚未选中单位，使用当前单位
 				OutUnit = CurrentUnit;
 
-				// initialize the closest distance
+				// 初始化最近距离
 				Closest = FVector::DistSquared2D(TargetLocation, CurrentUnit->GetActorLocation());
 			}
 		}
-		
+
 	}
 
-	// return the selected unit
+	// 返回找到的最近单位
 	return OutUnit;
 }
 
 FVector2D AStrategyPlayerController::GetMouseLocationForPlayer()
 {
-	// attempt to get the mouse position from this PC
+	// 尝试从该玩家控制器获取鼠标位置
 	float MouseX, MouseY;
 
 	if (GetMousePosition(MouseX, MouseY))
@@ -618,18 +618,18 @@ FVector2D AStrategyPlayerController::GetMouseLocationForPlayer()
 		return FVector2D(MouseX, MouseY);
 	}
 
-	// return an invalid vector
+	// 返回无效向量
 	return FVector2D::ZeroVector;
 }
 
 bool AStrategyPlayerController::GetLocationUnderCursor(FVector& Location)
 {
-	// trace the visibility channel at the cursor location
+	// 在光标位置沿可见性通道进行射线检测
 	FHitResult OutHit;
 
 	GetHitResultUnderCursorByChannel(SelectionTraceChannel, false, OutHit);
 
-	// if there was a blocking hit, return the hit location
+	// 如果有阻挡命中，返回命中位置
 	if (OutHit.bBlockingHit)
 	{
 		Location = OutHit.Location;
@@ -641,12 +641,12 @@ bool AStrategyPlayerController::GetLocationUnderCursor(FVector& Location)
 
 bool AStrategyPlayerController::GetLocationUnderFinger(FVector& Location)
 {
-	// trace the visibility channel at Touch 1 location
+	// 在 Touch 1 位置沿可见性通道进行射线检测
 	FHitResult OutHit;
 
 	GetHitResultUnderFingerByChannel(ETouchIndex::Touch1, SelectionTraceChannel, false, OutHit);
 
-	// if there was a blocking hit, return the hit location
+	// 如果有阻挡命中，返回命中位置
 	if (OutHit.bBlockingHit)
 	{
 		Location = OutHit.Location;
@@ -658,7 +658,7 @@ bool AStrategyPlayerController::GetLocationUnderFinger(FVector& Location)
 
 FVector AStrategyPlayerController::ProjectTouchPointToWorldSpace()
 {
-	// get the touch coordinates for the first finger
+	// 获取第一根手指的触控坐标
 	float TouchX, TouchY = 0.0f;
 	bool bPressed = false;
 
@@ -667,26 +667,26 @@ FVector AStrategyPlayerController::ProjectTouchPointToWorldSpace()
 	FVector WorldLocation = FVector::ZeroVector;
 	FVector WorldDirection = FVector::ZeroVector;
 
-	// deproject the coords into world space
+	// 将屏幕坐标反投影到世界空间
 	if (DeprojectScreenPositionToWorld(TouchX, TouchY, WorldLocation, WorldDirection))
 	{
-		// run a line trace down the camera
+		// 沿摄像机方向执行射线检测
 		FHitResult OutHit;
 
 		GetWorld()->LineTraceSingleByChannel(OutHit, WorldLocation, WorldLocation + WorldDirection * 10000.0f, ECC_Visibility);
 
-		// if we hit something, return the impact point
+		// 如果命中物体，返回碰撞点
 		if (OutHit.bBlockingHit)
 		{
 			return OutHit.ImpactPoint;
 		}
-		
 
-		// intersect with a horizontal plane and return the resulting point
+
+		// 与水平平面求交并返回交点
 		const FPlane IntersectPlane(FVector::ZeroVector, FVector::UpVector);
 		return FMath::LinePlaneIntersection(WorldLocation, WorldLocation + (WorldDirection * 100000.0f), IntersectPlane);
 	}
 
-	// failed to deproject, return a zero vector
+	// 反投影失败，返回零向量
 	return FVector::ZeroVector;
 }

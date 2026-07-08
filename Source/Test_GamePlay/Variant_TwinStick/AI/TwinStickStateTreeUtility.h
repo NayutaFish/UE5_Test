@@ -10,35 +10,35 @@
 class ACharacter;
 
 /**
- *  Instance data struct for the Get Player task
+ *  获取玩家任务的自定义实例数据结构
  */
 USTRUCT()
 struct FStateTreeGetPlayerInstanceData
 {
 	GENERATED_BODY()
 
-	/** Character that owns this task */
+	/** 拥有此任务的角色 */
 	UPROPERTY(EditAnywhere, Category="Context")
 	TObjectPtr<ACharacter> Character;
 
-	/** Character that owns this task */
+	/** 输出的目标玩家角色 */
 	UPROPERTY(VisibleAnywhere, Category="Output")
 	TObjectPtr<ACharacter> TargetPlayerCharacter;
 };
 
 /**
- *  StateTree task to get the player character
+ *  StateTree 任务：获取当前玩家角色
  */
 USTRUCT(meta=(DisplayName="GetPlayer", Category="TwinStick"))
 struct FStateTreeGetPlayerTask : public FStateTreeTaskCommonBase
 {
 	GENERATED_BODY()
 
-	/* Ensure we're using the correct instance data struct */
+	/* 使用正确的实例数据结构 */
 	using FInstanceDataType = FStateTreeGetPlayerInstanceData;
 	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
 
-	/** Runs while the owning state is active */
+	/** 状态激活时每帧执行 */
 	virtual EStateTreeRunStatus Tick(FStateTreeExecutionContext& Context, const float DeltaTime) const override;
 
 #if WITH_EDITOR

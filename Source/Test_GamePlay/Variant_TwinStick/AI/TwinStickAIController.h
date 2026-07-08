@@ -9,20 +9,20 @@
 class UStateTreeAIComponent;
 
 /**
- *  A StateTree-Enabled AI Controller for a Twin Stick Shooter game
- *  Runs NPC logic through a StateTree
+ *  支持 StateTree 的 AI 控制器。
+ *  通过 StateTree 运行 NPC 逻辑。
  */
 UCLASS(abstract)
 class ATwinStickAIController : public AAIController
 {
 	GENERATED_BODY()
-	
-	/** StateTree Component */
+
+	/** StateTree 组件 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UStateTreeAIComponent* StateTreeAI;
 
 public:
 
-	/** Constructor */
+	/** 构造函数 */
 	ATwinStickAIController();
 };

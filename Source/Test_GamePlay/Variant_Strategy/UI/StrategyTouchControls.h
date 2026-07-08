@@ -9,39 +9,39 @@
 class AStrategyPlayerController;
 
 /**
- *  Base class for additional touchscreen controls for a strategy game.
- *  Exposes some game commands to UI
+ * 策略游戏的触控控件基类
+ * 提供触屏操作按钮，向游戏下达命令
  */
 UCLASS(abstract)
 class TEST_GAMEPLAY_API UStrategyTouchControls : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 protected:
 
-	/** Pointer to the owning Strategy PC */
+	/** 所属的策略玩家控制器指针 */
 	TObjectPtr<AStrategyPlayerController> PlayerController;
 
 public:
 
-	/** Sets the owning Strategy PC pointer */
+	/** 设置所属的策略玩家控制器指针 */
 	void SetPlayerController(AStrategyPlayerController* PC);
 
-	/** Syncs the camera zoom percentage with the UI. Called by the owning PC */
+	/** 同步摄像机缩放百分比到 UI（蓝图可覆写） */
 	UFUNCTION(BlueprintImplementableEvent, Category="UI", meta=(DisplayName="Set Zoom Percentage"))
 	void BP_SetZoomPercentage(float Percentage);
 
 protected:
 
-	/** Resets the camera zoom level */
+	/** 重置摄像机缩放（蓝图可调用） */
 	UFUNCTION(BlueprintCallable, Category="UI")
 	void ResetZoom();
 
-	/** Toggles between select all units and deselect all units. */
+	/** 在全选和取消全选之间切换（蓝图可调用） */
 	UFUNCTION(BlueprintCallable, Category="UI")
 	void ToggleSelectAllUnits();
 
-	/** Sets the camera zoom percentage level */
+	/** 设置摄像机缩放百分比（蓝图可调用） */
 	UFUNCTION(BlueprintCallable, Category="UI")
 	void SetZoomPercentage(float Percentage);
 };

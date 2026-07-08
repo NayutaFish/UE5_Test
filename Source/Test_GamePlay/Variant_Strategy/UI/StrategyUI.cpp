@@ -5,13 +5,13 @@
 
 void UStrategyUI::SetSelectedUnitsCount(int32 Count)
 {
-	// is this a different count?
+	// 检查计数是否有变化
 	bool bChanged = SelectedUnitCount != Count;
 
-	// update the counter
+	// 更新计数器
 	SelectedUnitCount = Count;
 
-	// if the count changed, call the BP handler
+	// 如果计数有变化，调用蓝图更新处理
 	if (bChanged)
 	{
 		BP_UpdateUnitsCount();

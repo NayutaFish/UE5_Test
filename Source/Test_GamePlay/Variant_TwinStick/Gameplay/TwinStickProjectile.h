@@ -11,36 +11,37 @@ class UStaticMeshComponent;
 class UProjectileMovementComponent;
 
 /**
- *  A simple bouncing projectile for a Twin Stick shooter game
+ *  双摇杆射击游戏的弹跳子弹。
+ *  击中 NPC 时造成伤害，碰撞到其他物体会弹跳。
  */
 UCLASS(abstract)
 class ATwinStickProjectile : public AActor
 {
 	GENERATED_BODY()
-	
-	/** Projectile collision sphere */
+
+	/** 子弹碰撞球体 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	USphereComponent* CollisionSphere;
 
-	/** Mesh that provides the visual representation for this projectile */
+	/** 子弹视觉效果网格体 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Mesh;
 
-	/** Handles movement behaviors for this projectile */
+	/** 子弹移动组件 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
 
-public:	
+public:
 
-	/** Constructor */
+	/** 构造函数 */
 	ATwinStickProjectile();
 
-	/** Handles collisions */
+	/** 碰撞处理 */
 	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
 protected:
-	
-	/** Handles collisions that stop this projectile from moving */
+
+	/** 子弹停止时销毁自身 */
 	UFUNCTION()
 	void OnProjectileStop(const FHitResult& ImpactResult);
 

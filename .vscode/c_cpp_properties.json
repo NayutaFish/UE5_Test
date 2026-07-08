@@ -2,7 +2,7 @@
     "configurations": [
         {
             "name": "Test_GamePlayEditor Editor Win64 Development (Test_GamePlay)",
-            "compilerPath": "E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
             "cStandard": "c17",
             "cppStandard": "c++20",
             "intelliSenseMode": "msvc-x64",
@@ -26,12 +26,12 @@
                 "limitSymbolsToIncludedHeaders": true
             },
             "compileCommands": [
-                "E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay.json"
+                "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay.json"
             ]
         },
         {
             "name": "Win32",
-            "compilerPath": "E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
             "cStandard": "c17",
             "cppStandard": "c++20",
             "intelliSenseMode": "msvc-x64",
@@ -55,7 +55,7 @@
                 "limitSymbolsToIncludedHeaders": true
             },
             "compileCommands": [
-                "E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Default.json"
+                "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Default.json"
             ]
         }
     ],

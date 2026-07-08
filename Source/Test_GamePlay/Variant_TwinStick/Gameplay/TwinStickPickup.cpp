@@ -7,14 +7,15 @@
 #include "TwinStickCharacter.h"
 #include "Components/StaticMeshComponent.h"
 
+// 构造函数：创建碰撞球体和视觉网格体
 ATwinStickPickup::ATwinStickPickup()
 {
  	PrimaryActorTick.bCanEverTick = true;
 
-	// create the root component
+	// 创建根组件
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
-	// create the collision sphere
+	// 创建碰撞球体
 	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Collision Sphere"));
 	CollisionSphere->SetupAttachment(RootComponent);
 
@@ -25,7 +26,7 @@ ATwinStickPickup::ATwinStickPickup()
 	CollisionSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	CollisionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 
-	// create the mesh
+	// 创建网格体
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(CollisionSphere);
 
@@ -33,17 +34,18 @@ ATwinStickPickup::ATwinStickPickup()
 
 }
 
+// 与玩家角色重叠时增加物品计数并销毁自身
 void ATwinStickPickup::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	// have we overlapped the player character?
+	// 是否与玩家角色重叠？
 	if (ATwinStickCharacter* PlayerCharacter = Cast<ATwinStickCharacter>(OtherActor))
 	{
-		// give the pickup to the player
+		// 给玩家增加物品
 		PlayerCharacter->AddPickup();
 
-		// destroy this pickup
+		// 销毁拾取物
 		Destroy();
 	}
 }

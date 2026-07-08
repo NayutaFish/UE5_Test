@@ -12,12 +12,12 @@ class USphereComponent;
 class UEnvQuery;
 class UEnvQueryInstanceBlueprintWrapper;
 
-/** Delegate to report that this unit has finished moving */
+/** 单位移动完成时广播的委托 */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUnitMoveCompletedDelegate, AStrategyUnit*, Unit);
 
 /**
- *  A simple strategy game unit
- *  Rather than react to inputs, it's controlled indirectly by the Strategy Player Controller
+ * 策略游戏中的简单单位
+ * 不直接响应玩家输入，而是通过策略玩家控制器间接控制
  */
 UCLASS(abstract)
 class AStrategyUnit : public ACharacter
@@ -26,18 +26,18 @@ class AStrategyUnit : public ACharacter
 
 private:
 
-	/** Interaction range sphere */
+	/** 交互范围球体组件 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	USphereComponent* InteractionRange;
 
 protected:
 
-	/** Cast reference to the AI Controlling this unit */
+	/** 控制此单位的 AI 控制器引用 */
 	TObjectPtr<AAIController> AIController;
 
 public:
 
-	/** Constructor */
+	/** 构造函数 */
 	AStrategyUnit();
 
 protected:
@@ -46,85 +46,86 @@ protected:
 
 public:
 
-	/** Stops unit movement immediately */
+	/** 立即停止单位移动 */
 	void StopMoving();
 
-	/** Notifies this unit that it was selected */
+	/** 通知该单位已被选中 */
 	void UnitSelected();
 
-	/** Notifies this unit that it was deselected */
+	/** 通知该单位已被取消选中 */
 	void UnitDeselected();
 
-	/** Notifies this unit that it's been interacted with by another actor */
+	/** 通知该单位被其他单位交互 */
 	void Interact(AStrategyUnit* Interactor);
 
-	/** Attempts to move this unit to the passed location, and optionally signals it to interact on arrival */
+	/** 尝试移动单位到指定位置，可选择到达后与其他单位交互 */
 	void MoveToLocation(const FVector& Location, bool bInteract, const TArray<AStrategyUnit*> IgnoreList);
 
-	/** Returns the last cached movement goal location */
+	/** 返回最近缓存的移动目标位置 */
 	FVector GetMovementGoal() const;
 
 protected:
 
-	/** Called by EQS when the movement destination query has finished */
+	/** EQS 移动目标查询完成时调用 */
 	UFUNCTION()
 	void OnEQSFinished(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus);
 
-	/** Called by the AI controller when this unit has finished moving */
+	/** AI 控制器通知该单位移动完成时调用 */
 	void OnMoveFinished(FAIRequestID RequestID, const FPathFollowingResult& Result);
 
-	/** Wraps up movement logic */
+	/** 处理移动完成的收尾逻辑 */
 	void HandleMoveFinished();
 
 protected:
 
-	/** Blueprint handler for strategy game selection */
+	/** 蓝图可覆写：单位被选中时的处理 */
 	UFUNCTION(BlueprintImplementableEvent, Category="NPC", meta = (DisplayName="Unit Selected"))
 	void BP_UnitSelected();
 
-	/** Blueprint handler for strategy game deselection */
+	/** 蓝图可覆写：单位被取消选中时的处理 */
 	UFUNCTION(BlueprintImplementableEvent, Category="NPC", meta = (DisplayName="Unit Deselected"))
 	void BP_UnitDeselected();
 
-	/** Blueprint handler to stop the unit's interaction animation */
+	/** 蓝图可覆写：停止单位的交互动画 */
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="NPC", meta = (DisplayName="Stop Animation"))
 	void BP_StopAnimation();
 
-	/** Blueprint handler for strategy game interactions */
+	/** 蓝图可覆写：单位交互行为 */
 	UFUNCTION(BlueprintImplementableEvent, Category="NPC", meta = (DisplayName="Interaction Behavior"))
 	void BP_InteractionBehavior(AStrategyUnit* Interactor);
 
 protected:
 
-	/** EnvQuery to use when this unit interacts after movement */
+	/** 到达后需要交互时使用的 EQS 查询 */
 	UPROPERTY(EditAnywhere, Category="NPC")
 	TObjectPtr<UEnvQuery> InteractionQuery;
 
-	/** EnvQuery to use when this unit does not interact after movement */
+	/** 到达后不需要交互时使用的 EQS 查询 */
 	UPROPERTY(EditAnywhere, Category="NPC")
 	TObjectPtr<UEnvQuery> NoInteractionQuery;
 
-	/** How close we should get to the movement goal to consider ourselves as having reached it */
+	/** 距离移动目标多远时认为已到达 */
 	UPROPERTY(EditAnywhere, Category="NPC", meta = (ClampMin = 0, ClampMax = 10000, Units = "cm"))
 	float MovementAcceptanceRadius = 100.0f;
 
-	/** Max distance to look for nearby units when doing an interaction check */
+	/** 交互检测时搜索附近单位的最远距离 */
 	UPROPERTY(EditAnywhere, Category="Input", meta = (ClampMin = 0, ClampMax = 10000, Units = "cm"))
 	float InteractionRadius = 250.0f;
 
-	/** EQS instance running the movement query for this unit */
+	/** 该单位正在运行的 EQS 查询实例 */
 	TObjectPtr<UEnvQueryInstanceBlueprintWrapper> EnvQueryInstance;
 
-	/** Cached movement goal for this unit */
+	/** 缓存的移动目标位置 */
 	FVector CurrentMovementGoal;
 
-	/** If true, this unit will attempt to interact with a nearby unit upon finishing movement */
+	/** 到达目标后是否尝试与其他单位交互 */
 	bool bInteractOnArrival = false;
 
-	/** List of actors to ignore when searching for units to interact with */
+	/** 交互检测时需要忽略的单位列表 */
 	TArray<AStrategyUnit*> InteractIgnoreList;
 
 public:
 
+	/** 移动完成时广播的委托 */
 	FOnUnitMoveCompletedDelegate OnMoveCompleted;
 };

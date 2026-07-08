@@ -16,197 +16,196 @@ class ATwinStickAoEAttack;
 class ATwinStickProjectile;
 
 /**
- *  A player-controlled character for a Twin Stick Shooter game
- *  Automatically rotates to face the aim direction.
- *  Fires projectiles and spawns AoE attacks.
+ *  双摇杆射击游戏的玩家角色。
+ *  自动旋转面向瞄准方向，可发射子弹和释放范围攻击（AoE）。
  */
 UCLASS(abstract)
 class ATwinStickCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-	/** Camera boom spring arm */
+	/** 相机弹簧臂 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* SpringArm;
 
-	/** Player Camera */
+	/** 玩家相机 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
 
 protected:
 
-	/** Movement input action */
+	/** 移动输入动作 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MoveAction;
 
-	/** Gamepad aim input action */
+	/** 手柄瞄准输入动作 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* StickAimAction;
 
-	/** Mouse aim input action */
+	/** 鼠标瞄准输入动作 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MouseAimAction;
 
-	/** Dash input action */
+	/** 冲刺输入动作 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* DashAction;
 
-	/** Shooting input action */
+	/** 射击输入动作 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* ShootAction;
 
-	/** AoE attack input action */
+	/** AoE 攻击输入动作 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* AoEAction;
 
-	/** Trace channel to use for mouse aim */
+	/** 鼠标瞄准使用的碰撞追踪通道 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	TEnumAsByte<ETraceTypeQuery> MouseAimTraceChannel;
 
-	/** Impulse to apply to the character when dashing */
+	/** 冲刺时施加给角色的冲击力 */
 	UPROPERTY(EditAnywhere, Category="Dash", meta = (ClampMin = 0, ClampMax = 10000, Units = "cm/s"))
 	float DashImpulse = 2500.0f;
 
-	/** Type of projectile to spawn when shooting */
+	/** 射击时生成的子弹类型 */
 	UPROPERTY(EditAnywhere, Category="Projectile")
 	TSubclassOf<ATwinStickProjectile> ProjectileClass;
 
-	/** Distance ahead of the character that the projectile will be spawned at */
+	/** 子弹生成位置在角色前方的偏移距离 */
 	UPROPERTY(EditAnywhere, Category="Projectile", meta = (ClampMin = 0, ClampMax = 1000, Units = "cm"))
 	float ProjectileOffset = 100.0f;
 
-	/** Type of AoE attack actor to spawn */
+	/** AoE 攻击生成器的类型 */
 	UPROPERTY(EditAnywhere, Category="AoE")
 	TSubclassOf<ATwinStickAoEAttack> AoEAttackClass;
 
-	/** Number of starting AoE attack items */
+	/** 可使用的 AoE 攻击次数 */
 	UPROPERTY(EditAnywhere, Category="AoE")
 	int32 Items = 1;
 
-	/** Knockback impulse to apply to the character when they're damaged */
+	/** 角色受到伤害时的击退力度 */
 	UPROPERTY(EditAnywhere, Category="Damage", meta = (ClampMin = 0, ClampMax = 1000, Units = "cm"))
 	float KnockbackStrength = 2500.0f;
 
-	/** Time to disallow AoE attacks after one is performed */
+	/** AoE 攻击后的冷却时间 */
 	UPROPERTY(EditAnywhere, Category="AoE", meta = (ClampMin = 0, ClampMax = 10, Units = "s"))
 	float AoECooldownTime = 1.0f;
 
-	/** Speed to blend between our current rotation and the target aim rotation when stick aiming */
+	/** 手柄瞄准时旋转插值速度 */
 	UPROPERTY(EditAnywhere, Category="Aim", meta = (ClampMin = 0, ClampMax = 100, Units = "s"))
 	float AimRotationInterpSpeed = 10.0f;
 
-	/** Game time of the last AoE attack */
+	/** 上次 AoE 攻击的游戏时间 */
 	float LastAoETime = 0.0f;
 
-	/** Aim Yaw Angle in degrees */
+	/** 瞄准偏航角（度） */
 	float AimAngle = 0.0f;
 
-	/** Pointer to the player controller assigned to this character */
+	/** 指向该角色所属的玩家控制器 */
 	TObjectPtr<APlayerController> PlayerController;
 
-	/** If true, the player is using mouse aim */
+	/** 是否正在使用鼠标瞄准 */
 	bool bUsingMouse = false;
 
-	/** Last held move input */
+	/** 上次的移动输入 */
 	FVector2D LastMoveInput;
 
-	/** If true, the player is auto firing while stick aiming */
+	/** 手柄自动射击是否激活 */
 	bool bAutoFireActive = false;
 
-	/** Time to wait between autofire attempts */
+	/** 自动射击间隔时间 */
 	UPROPERTY(EditAnywhere, Category="Aim", meta = (ClampMin = 0, ClampMax = 5, Units = "s"))
 	float AutoFireDelay = 0.2f;
 
-	/** Timer to handle stick autofire */
+	/** 手柄自动射击定时器 */
 	FTimerHandle AutoFireTimer;
 
 public:
-	
-	/** Constructor */
+
+	/** 构造函数 */
 	ATwinStickCharacter();
 
 protected:
 
-	/** Gameplay Initialization */
+	/** 游戏初始化 */
 	virtual void BeginPlay() override;
 
-	/** Gameplay cleanup */
+	/** 游戏清理 */
 	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
 
-	/** Possessed by controller initialization */
+	/** 控制器变更时调用 */
 	virtual void NotifyControllerChanged() override;
 
-public:	
-	
-	/** Updates the character's rotation to face the aim direction */
+public:
+
+	/** 每帧更新角色旋转以朝向瞄准方向 */
 	virtual void Tick(float DeltaTime) override;
 
-	/** Adds input bindings */
+	/** 绑定输入动作 */
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
 
-	/** Handles movement inputs */
+	/** 处理移动输入 */
 	void Move(const FInputActionValue& Value);
 
-	/** Handles joypad aim */
+	/** 处理手柄瞄准 */
 	void StickAim(const FInputActionValue& Value);
 
-	/** Handles mouse aim */
+	/** 处理鼠标瞄准 */
 	void MouseAim(const FInputActionValue& Value);
 
-	/** Performs a dash */
+	/** 执行冲刺 */
 	void Dash(const FInputActionValue& Value);
 
-	/** Shoots projectiles */
+	/** 发射子弹 */
 	void Shoot(const FInputActionValue& Value);
 
-	/** Performs an AoE Attack */
+	/** 执行 AoE 攻击 */
 	void AoEAttack(const FInputActionValue& Value);
 
 public:
 
-	/** Handles move inputs from both input actions and touch interface */
+	/** 处理来自输入动作和触摸界面的移动输入 */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoMove(float AxisX, float AxisY);
 
-	/** Handles aim inputs from both input actions and touch interface */
+	/** 处理来自输入动作和触摸界面的瞄准输入 */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoAim(float AxisX, float AxisY);
 
-	/** Handles dash inputs from both input actions and touch interface */
+	/** 处理来自输入动作和触摸界面的冲刺输入 */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoDash();
 
-	/** Handles shoot inputs from both input actions and touch interface */
+	/** 处理来自输入动作和触摸界面的射击输入 */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoShoot();
 
-	/** Handles aoe attack inputs from both input actions and touch interface */
+	/** 处理来自输入动作和触摸界面的 AoE 攻击输入 */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoAoEAttack();
 
 public:
 
-	/** Applies collision impact to the player */
+	/** 处理碰撞伤害，包含击退效果 */
 	void HandleDamage(float Damage, const FVector& DamageDirection);
 
 protected:
 
-	/** Allows Blueprint code to react to damage */
+	/** 让蓝图代码响应受伤事件 */
 	UFUNCTION(BlueprintImplementableEvent, Category="Damage", meta = (DisplayName = "Damaged"))
 	void BP_Damaged();
 
 public:
 
-	/** Gives the player a pickup item */
+	/** 给玩家增加一个拾取物品 */
 	void AddPickup();
 
 protected:
 
-	/** Updates the items counter on the Game Mode */
+	/** 更新 GameMode 中的物品计数 */
 	void UpdateItems();
 
-	/** Resets stick the aim autofire flag after the autofire timer has expired */
+	/** 自动射击冷却结束后重置标志 */
 	void ResetAutoFire();
 };

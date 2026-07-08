@@ -1,202 +1,202 @@
 [
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Player\\ActorSpawnPoint.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Player\\ActorSpawnPoint.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Test_GamePlay.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Test_GamePlay.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Test_GamePlayCharacter.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Test_GamePlayCharacter.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Test_GamePlayGameMode.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Test_GamePlayGameMode.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Test_GamePlayPlayerController.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Test_GamePlayPlayerController.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_Strategy\\EnvQueryContext_MoveGoal.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_Strategy\\EnvQueryContext_MoveGoal.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_Strategy\\StrategyGameMode.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_Strategy\\StrategyGameMode.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_Strategy\\StrategyPawn.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_Strategy\\StrategyPawn.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_Strategy\\StrategyPlayerController.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_Strategy\\StrategyPlayerController.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_Strategy\\StrategyUnit.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_Strategy\\StrategyUnit.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_Strategy\\UI\\StrategyHUD.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_Strategy\\UI\\StrategyHUD.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_Strategy\\UI\\StrategyTouchControls.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_Strategy\\UI\\StrategyTouchControls.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_Strategy\\UI\\StrategyUI.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_Strategy\\UI\\StrategyUI.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\AI\\TwinStickAIController.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\AI\\TwinStickAIController.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\AI\\TwinStickNPC.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\AI\\TwinStickNPC.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\AI\\TwinStickNPCDestruction.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\AI\\TwinStickNPCDestruction.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\AI\\TwinStickSpawner.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\AI\\TwinStickSpawner.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\AI\\TwinStickStateTreeUtility.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\AI\\TwinStickStateTreeUtility.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\Gameplay\\TwinStickAoEAttack.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\Gameplay\\TwinStickAoEAttack.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\Gameplay\\TwinStickPickup.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\Gameplay\\TwinStickPickup.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\Gameplay\\TwinStickProjectile.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\Gameplay\\TwinStickProjectile.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\TwinStickCharacter.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\TwinStickCharacter.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\TwinStickGameMode.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\TwinStickGameMode.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\TwinStickPlayerController.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\TwinStickPlayerController.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	},
 	{
-		"file": "E:\\project\\UE\\demo0705\\Source\\Test_GamePlay\\Variant_TwinStick\\UI\\TwinStickUI.cpp",
+		"file": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Source\\Test_GamePlay\\Variant_TwinStick\\UI\\TwinStickUI.cpp",
 		"arguments": [
-			"E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
-			"@E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\.vscode\\compileCommands_Test_GamePlay\\Test_GamePlay.0.rsp"
 		],
-		"directory": "E:\\tool\\epic\\UE_5.8\\Engine\\Source"
+		"directory": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Source"
 	}
 ]

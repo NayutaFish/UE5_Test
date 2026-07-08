@@ -7,18 +7,17 @@
 #include "TwinStickNPCDestruction.generated.h"
 
 /**
- *  A NPC destruction proxy for a Twin Stick Shooter game
- *  Replaces the NPC when it is destroyed,
- *  allowing it to play effects without affecting gameplay 
+ *  NPC 销毁代理。
+ *  替换被销毁的 NPC，用于播放特效而不影响游戏逻辑。
  */
 UCLASS(abstract)
 class ATwinStickNPCDestruction : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:
 
-	/** Constructor */
+	/** 构造函数 */
 	ATwinStickNPCDestruction();
 
 };

@@ -7,11 +7,12 @@
 #include "StrategyGameMode.generated.h"
 
 /**
- *  Simple GameMode for a top down strategy game.
+ * 俯视角策略游戏的简单游戏模式基类
+ * 抽象类，需要子类实现具体的游戏规则逻辑
  */
 UCLASS(abstract)
 class AStrategyGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 };

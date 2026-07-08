@@ -10,70 +10,71 @@
 class ARecastNavMesh;
 
 /**
- *  A simple NPC spawner for a Twin Stick Shooter game
+ *  双摇杆射击游戏的 NPC 生成器。
+ *  按组定时生成 NPC，每批生成多个。
  */
 UCLASS(abstract)
 class ATwinStickSpawner : public AActor
 {
 	GENERATED_BODY()
-	
+
 protected:
 
-	/** Type of NPC to spawn */
+	/** 要生成的 NPC 类型 */
 	UPROPERTY(EditAnywhere, Category="NPC Spawner")
 	TSubclassOf<ATwinStickNPC> NPCClass;
-	
-	/** Time delay between enemy group spawns */
+
+	/** 每批 NPC 的生成间隔 */
 	UPROPERTY(EditAnywhere, Category="NPC Spawner", meta = (ClampMin = 0, ClampMax = 20, Units = "s"))
 	float SpawnGroupDelay = 5.0f;
 
-	/** Min time delay between individual NPC spawns */
+	/** 单个 NPC 之间的最小生成延迟 */
 	UPROPERTY(EditAnywhere, Category="NPC Spawner", meta = (ClampMin = 0, ClampMax = 2, Units = "s"))
 	float MinSpawnDelay = 0.33f;
 
-	/** Max time delay between individual NPC spawns */
+	/** 单个 NPC 之间的最大生成延迟 */
 	UPROPERTY(EditAnywhere, Category="NPC Spawner", meta = (ClampMin = 0, ClampMax = 2, Units = "s"))
 	float MaxSpawnDelay = 0.66f;
 
-	/** Radius around the spawner where it can spawn NPCs */
+	/** NPC 在生成器周围的可生成半径 */
 	UPROPERTY(EditAnywhere, Category="NPC Spawner", meta = (ClampMin = 0, ClampMax = 20, Units = "cm"))
 	float SpawnRadius = 600.0f;
 
-	/** Number of NPCs to spawn per group */
+	/** 每批生成的 NPC 数量 */
 	UPROPERTY(EditAnywhere, Category="NPC Spawner", meta = (ClampMin = 0, ClampMax = 10))
 	int32 SpawnGroupSize = 3;
-	
-	/** Number of NPCs spawned in the current group */
+
+	/** 当前批次已生成的 NPC 数量 */
 	int32 SpawnCount = 0;
 
-	/** NPC group spawn timer */
+	/** 批次生成定时器 */
 	FTimerHandle SpawnGroupTimer;
 
-	/** NPC spawn timer */
+	/** 单个 NPC 生成定时器 */
 	FTimerHandle SpawnNPCTimer;
 
-	/** Pointer to the recast nav mesh actor, used to provide NPC spawn locations */
+	/** Recast 导航网格引用，用于寻找 NPC 有效生成位置 */
 	TObjectPtr<ARecastNavMesh> NavData;
 
-public:	
+public:
 
-	/** Constructor */
+	/** 构造函数 */
 	ATwinStickSpawner();
 
 protected:
 
-	/** Gameplay initialization */
+	/** 游戏初始化 */
 	virtual void BeginPlay() override;
 
-	/** Gameplay cleanup */
+	/** 游戏清理 */
 	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
 
 protected:
 
-	/** Spawns a new NPC group */
+	/** 开始生成新一批 NPC */
 	void SpawnNPCGroup();
 
-	/** Spawns an individual NPC */
+	/** 生成单个 NPC */
 	void SpawnNPC();
 
 };

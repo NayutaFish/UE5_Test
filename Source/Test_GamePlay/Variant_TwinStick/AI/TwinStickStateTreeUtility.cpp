@@ -9,15 +9,16 @@
 
 #define LOCTEXT_NAMESPACE "TopDownTemplate"
 
+// Tick：获取第一个本地玩家的 Pawn 作为目标角色
 EStateTreeRunStatus FStateTreeGetPlayerTask::Tick(FStateTreeExecutionContext& Context, const float DeltaTime) const
 {
-	// get the instance data
+	// 获取实例数据
 	FInstanceDataType& InstanceData = Context.GetInstanceData(*this);
 
-	// get the pawn possessed by the first local player
+	// 获取第一个本地玩家控制的 Pawn
 	InstanceData.TargetPlayerCharacter = Cast<ACharacter>(UGameplayStatics::GetPlayerPawn(InstanceData.Character, 0));
 
-	// keep the task running
+	// 保持任务运行
 	return EStateTreeRunStatus::Running;
 }
 

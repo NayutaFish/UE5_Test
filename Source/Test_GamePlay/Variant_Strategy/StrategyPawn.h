@@ -10,32 +10,32 @@ class UCameraComponent;
 class UFloatingPawnMovement;
 
 /**
- *  Simple pawn that implements a top-down camera perspective for a strategy game.
- *  Units are indirectly controlled by other means.
+ * 策略游戏的俯视角摄像机 Pawn
+ * 提供正交投影摄像机和浮动移动组件，单位通过其他方式间接控制
  */
 UCLASS(abstract)
 class AStrategyPawn : public APawn
 {
 	GENERATED_BODY()
 
-	/** Camera */
+	/** 摄像机组件 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
 
-	/** Movement Component */
+	/** 浮动移动组件 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UFloatingPawnMovement* FloatingPawnMovement;
 
 public:
 
-	/** Constructor */
+	/** 构造函数 */
 	AStrategyPawn();
 
 public:
 
-	/** Sets the camera zoom modifier value */
+	/** 设置摄像机缩放值（正交宽度） */
 	void SetZoomModifier(float Value);
 
-	/** Returns the camera component */
+	/** 获取摄像机组件 */
 	UCameraComponent* GetCamera() const { return Camera; }
 };
