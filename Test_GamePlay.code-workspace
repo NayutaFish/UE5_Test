@@ -3,15 +3,19 @@
 		{
 			"name": "Test_GamePlay",
 			"path": "."
+		},
+		{
+			"name": "UE5",
+			"path": "E:\\tool\\epic\\UE_5.8"
 		}
 	],
 	"settings": {
 		"js/ts.tsc.autoDetect": "off",
 		"npm.autoDetect": "off",
 		"terminal.integrated.env.windows": {
-			"PATH": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64;${env:PATH}",
-			"DOTNET_ROOT": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64",
-			"DOTNET_HOST_PATH": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64\\dotnet.exe",
+			"PATH": "E:\\tool\\epic\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64;${env:PATH}",
+			"DOTNET_ROOT": "E:\\tool\\epic\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64",
+			"DOTNET_HOST_PATH": "E:\\tool\\epic\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64\\dotnet.exe",
 			"DOTNET_MULTILEVEL_LOOKUP": "0",
 			"DOTNET_ROLL_FORWARD": "LatestMajor"
 		}
@@ -33,13 +37,13 @@
 					"Test_GamePlay",
 					"Win64",
 					"Debug",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -50,7 +54,7 @@
 					"Test_GamePlay",
 					"Win64",
 					"Debug",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -59,7 +63,7 @@
 				],
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -70,13 +74,13 @@
 					"Test_GamePlay",
 					"Win64",
 					"Debug",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -87,13 +91,13 @@
 					"Test_GamePlay",
 					"Win64",
 					"DebugGame",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -104,7 +108,7 @@
 					"Test_GamePlay",
 					"Win64",
 					"DebugGame",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -113,7 +117,7 @@
 				],
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -124,13 +128,13 @@
 					"Test_GamePlay",
 					"Win64",
 					"DebugGame",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -141,13 +145,13 @@
 					"Test_GamePlay",
 					"Win64",
 					"Development",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -158,7 +162,7 @@
 					"Test_GamePlay",
 					"Win64",
 					"Development",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -167,7 +171,7 @@
 				],
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -178,13 +182,13 @@
 					"Test_GamePlay",
 					"Win64",
 					"Development",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -195,13 +199,13 @@
 					"Test_GamePlay",
 					"Win64",
 					"Test",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -212,7 +216,7 @@
 					"Test_GamePlay",
 					"Win64",
 					"Test",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -221,7 +225,7 @@
 				],
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -232,13 +236,13 @@
 					"Test_GamePlay",
 					"Win64",
 					"Test",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -249,13 +253,13 @@
 					"Test_GamePlay",
 					"Win64",
 					"Shipping",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -266,7 +270,7 @@
 					"Test_GamePlay",
 					"Win64",
 					"Shipping",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -275,7 +279,7 @@
 				],
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -286,13 +290,13 @@
 					"Test_GamePlay",
 					"Win64",
 					"Shipping",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -303,13 +307,13 @@
 					"Test_GamePlayEditor",
 					"Win64",
 					"Debug",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -320,7 +324,7 @@
 					"Test_GamePlayEditor",
 					"Win64",
 					"Debug",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -329,7 +333,7 @@
 				],
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -340,13 +344,13 @@
 					"Test_GamePlayEditor",
 					"Win64",
 					"Debug",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -357,13 +361,13 @@
 					"Test_GamePlayEditor",
 					"Win64",
 					"DebugGame",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -374,7 +378,7 @@
 					"Test_GamePlayEditor",
 					"Win64",
 					"DebugGame",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -383,7 +387,7 @@
 				],
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -394,13 +398,13 @@
 					"Test_GamePlayEditor",
 					"Win64",
 					"DebugGame",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -411,13 +415,13 @@
 					"Test_GamePlayEditor",
 					"Win64",
 					"Development",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -428,7 +432,7 @@
 					"Test_GamePlayEditor",
 					"Win64",
 					"Development",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
@@ -437,7 +441,7 @@
 				],
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -448,13 +452,13 @@
 					"Test_GamePlayEditor",
 					"Win64",
 					"Development",
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"type": "shell",
 				"options": {
-					"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"cwd": "E:\\tool\\epic\\UE_5.8"
 				}
 			}
 		]
@@ -465,156 +469,156 @@
 			{
 				"name": "Launch Test_GamePlay (Debug)",
 				"request": "launch",
-				"program": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Binaries\\Win64\\UnrealGame-Win64-Debug.exe",
+				"program": "E:\\project\\UE\\demo0705\\Binaries\\Win64\\UnrealGame-Win64-Debug.exe",
 				"preLaunchTask": "Test_GamePlay Win64 Debug Build",
 				"args": [
 				],
-				"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8",
+				"cwd": "E:\\tool\\epic\\UE_5.8",
 				"stopAtEntry": false,
 				"console": "integratedTerminal",
 				"type": "cppvsdbg",
-				"visualizerFile": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"visualizerFile": "E:\\tool\\epic\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
 				"sourceFileMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				},
 				"sourceMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
 				"name": "Launch Test_GamePlay (DebugGame)",
 				"request": "launch",
-				"program": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Binaries\\Win64\\UnrealGame-Win64-DebugGame.exe",
+				"program": "E:\\project\\UE\\demo0705\\Binaries\\Win64\\UnrealGame-Win64-DebugGame.exe",
 				"preLaunchTask": "Test_GamePlay Win64 DebugGame Build",
 				"args": [
 				],
-				"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8",
+				"cwd": "E:\\tool\\epic\\UE_5.8",
 				"stopAtEntry": false,
 				"console": "integratedTerminal",
 				"type": "cppvsdbg",
-				"visualizerFile": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"visualizerFile": "E:\\tool\\epic\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
 				"sourceFileMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				},
 				"sourceMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
 				"name": "Launch Test_GamePlay (Development)",
 				"request": "launch",
-				"program": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Binaries\\Win64\\UnrealGame.exe",
+				"program": "E:\\project\\UE\\demo0705\\Binaries\\Win64\\UnrealGame.exe",
 				"preLaunchTask": "Test_GamePlay Win64 Development Build",
 				"args": [
 				],
-				"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8",
+				"cwd": "E:\\tool\\epic\\UE_5.8",
 				"stopAtEntry": false,
 				"console": "integratedTerminal",
 				"type": "cppvsdbg",
-				"visualizerFile": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"visualizerFile": "E:\\tool\\epic\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
 				"sourceFileMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				},
 				"sourceMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
 				"name": "Launch Test_GamePlay (Test)",
 				"request": "launch",
-				"program": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Binaries\\Win64\\UnrealGame-Win64-Test.exe",
+				"program": "E:\\project\\UE\\demo0705\\Binaries\\Win64\\UnrealGame-Win64-Test.exe",
 				"preLaunchTask": "Test_GamePlay Win64 Test Build",
 				"args": [
 				],
-				"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8",
+				"cwd": "E:\\tool\\epic\\UE_5.8",
 				"stopAtEntry": false,
 				"console": "integratedTerminal",
 				"type": "cppvsdbg",
-				"visualizerFile": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"visualizerFile": "E:\\tool\\epic\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
 				"sourceFileMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				},
 				"sourceMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
 				"name": "Launch Test_GamePlay (Shipping)",
 				"request": "launch",
-				"program": "C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Binaries\\Win64\\UnrealGame-Win64-Shipping.exe",
+				"program": "E:\\project\\UE\\demo0705\\Binaries\\Win64\\UnrealGame-Win64-Shipping.exe",
 				"preLaunchTask": "Test_GamePlay Win64 Shipping Build",
 				"args": [
 				],
-				"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8",
+				"cwd": "E:\\tool\\epic\\UE_5.8",
 				"stopAtEntry": false,
 				"console": "integratedTerminal",
 				"type": "cppvsdbg",
-				"visualizerFile": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"visualizerFile": "E:\\tool\\epic\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
 				"sourceFileMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				},
 				"sourceMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
 				"name": "Launch Test_GamePlayEditor (Debug)",
 				"request": "launch",
-				"program": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Binaries\\Win64\\UnrealEditor-Win64-Debug.exe",
+				"program": "E:\\tool\\epic\\UE_5.8\\Engine\\Binaries\\Win64\\UnrealEditor-Win64-Debug.exe",
 				"preLaunchTask": "Test_GamePlayEditor Win64 Debug Build",
 				"args": [
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject"
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject"
 				],
-				"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8",
+				"cwd": "E:\\tool\\epic\\UE_5.8",
 				"stopAtEntry": false,
 				"console": "integratedTerminal",
 				"type": "cppvsdbg",
-				"visualizerFile": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"visualizerFile": "E:\\tool\\epic\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
 				"sourceFileMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				},
 				"sourceMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
 				"name": "Launch Test_GamePlayEditor (DebugGame)",
 				"request": "launch",
-				"program": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Binaries\\Win64\\UnrealEditor-Win64-DebugGame.exe",
+				"program": "E:\\tool\\epic\\UE_5.8\\Engine\\Binaries\\Win64\\UnrealEditor-Win64-DebugGame.exe",
 				"preLaunchTask": "Test_GamePlayEditor Win64 DebugGame Build",
 				"args": [
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject"
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject"
 				],
-				"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8",
+				"cwd": "E:\\tool\\epic\\UE_5.8",
 				"stopAtEntry": false,
 				"console": "integratedTerminal",
 				"type": "cppvsdbg",
-				"visualizerFile": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"visualizerFile": "E:\\tool\\epic\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
 				"sourceFileMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				},
 				"sourceMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
 				"name": "Launch Test_GamePlayEditor (Development)",
 				"request": "launch",
-				"program": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Binaries\\Win64\\UnrealEditor.exe",
+				"program": "E:\\tool\\epic\\UE_5.8\\Engine\\Binaries\\Win64\\UnrealEditor.exe",
 				"preLaunchTask": "Test_GamePlayEditor Win64 Development Build",
 				"args": [
-					"C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject"
+					"E:\\project\\UE\\demo0705\\Test_GamePlay.uproject"
 				],
-				"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8",
+				"cwd": "E:\\tool\\epic\\UE_5.8",
 				"stopAtEntry": false,
 				"console": "integratedTerminal",
 				"type": "cppvsdbg",
-				"visualizerFile": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"visualizerFile": "E:\\tool\\epic\\UE_5.8\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
 				"sourceFileMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				},
 				"sourceMap": {
-					"D:\\build\\++UE5\\Sync": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+					"D:\\build\\++UE5\\Sync": "E:\\tool\\epic\\UE_5.8"
 				}
 			},
 			{
@@ -622,25 +626,25 @@
 				"type": "coreclr",
 				"request": "launch",
 				"preLaunchTask": "UnrealBuildTool Win64 Development Build",
-				"program": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Build\\BatchFiles\\RunUBT.bat",
+				"program": "E:\\tool\\epic\\UE_5.8\\Engine\\Build\\BatchFiles\\RunUBT.bat",
 				"args": [
 					"-projectfiles",
 					"-vscode",
-					"-project=C:\\AAADdisk\\For_UE5\\UE5Projects\\Test_GamePlay\\Test_GamePlay.uproject",
+					"-project=E:\\project\\UE\\demo0705\\Test_GamePlay.uproject",
 					"-game",
 					"-engine",
 					"-dotnet"
 				],
 				"env": {
-					"PATH": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64;${env:PATH}",
-					"DOTNET_ROOT": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64",
-					"DOTNET_HOST_PATH": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64\\dotnet.exe",
+					"PATH": "E:\\tool\\epic\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64;${env:PATH}",
+					"DOTNET_ROOT": "E:\\tool\\epic\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64",
+					"DOTNET_HOST_PATH": "E:\\tool\\epic\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64\\dotnet.exe",
 					"DOTNET_MULTILEVEL_LOOKUP": "0",
 					"DOTNET_ROLL_FORWARD": "LatestMajor"
 				},
 				"console": "integratedTerminal",
 				"stopAtEntry": false,
-				"cwd": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
+				"cwd": "E:\\tool\\epic\\UE_5.8"
 			}
 		]
 	}
