@@ -3,10 +3,6 @@
 		{
 			"name": "Test_GamePlay",
 			"path": "."
-		},
-		{
-			"name": "UE5",
-			"path": "C:\\AAADdisk\\For_UE5\\UE_5.8.0\\UE_5.8"
 		}
 	],
 	"settings": {
