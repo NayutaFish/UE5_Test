@@ -12,6 +12,21 @@
 	"settings": {
 		"js/ts.tsc.autoDetect": "off",
 		"npm.autoDetect": "off",
+		"C_Cpp.default.compileCommands": "E:\\project\\UE\\demo0705\\.vscode\\compileCommands_Test_GamePlay.json",
+		"C_Cpp.default.compilerPath": "E:\\tool\\vs2022\\build tool\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+		"C_Cpp.default.cppStandard": "c++20",
+		"C_Cpp.default.cStandard": "c17",
+		"C_Cpp.default.intelliSenseMode": "msvc-x64",
+		"C_Cpp.default.includePath": [
+			"E:\\project\\UE\\demo0705\\Source\\**",
+			"E:\\project\\UE\\demo0705\\Intermediate\\Build\\Win64\\UnrealEditor\\Inc\\**",
+			"E:\\tool\\epic\\UE_5.8\\Engine\\Source\\**",
+			"E:\\tool\\epic\\UE_5.8\\Engine\\Intermediate\\Build\\Win64\\UnrealEditor\\Inc\\**"
+		],
+		"C_Cpp.default.forcedInclude": [
+			"E:\\project\\UE\\demo0705\\Intermediate\\Build\\Win64\\x64\\UnrealEditor\\Development\\Test_GamePlay\\Definitions.Test_GamePlay.h",
+			"E:\\project\\UE\\demo0705\\Intermediate\\Build\\Win64\\x64\\Test_GamePlayEditor\\Development\\UnrealEd\\SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h"
+		],
 		"terminal.integrated.env.windows": {
 			"PATH": "E:\\tool\\epic\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64;${env:PATH}",
 			"DOTNET_ROOT": "E:\\tool\\epic\\UE_5.8\\Engine\\Binaries\\ThirdParty\\DotNet\\10.0\\win-x64",

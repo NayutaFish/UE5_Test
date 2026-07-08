@@ -73,3 +73,9 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Local Codex/MCP configuration
+.codex/
+.mcp.json
+mcp.json
+*.mcp.json
