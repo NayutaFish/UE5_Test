@@ -1,63 +1,188 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "HikariPlayerCharacter.h"
 #include "Common/AttackAreaBase.h"
 #include "Components/CapsuleComponent.h"
+#include "EnhancedInputComponent.h"
+#include "InputAction.h"
+#include "InputActionValue.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Animation/AnimInstance.h"
+#include "Animation/AnimMontage.h"
 #include "Engine/World.h"
 
-// Sets default values
 AHikariPlayerCharacter::AHikariPlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//禁止角色旋转跟随控制器旋转
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
-	//让角色的朝向跟随移动方向
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	// 不使用 Controller Desired Rotation，避免和移动朝向旋转打架
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
-	// 转身速度，Z 轴是水平转向
-	//Frotator(Pitch,Yaw,Roll)
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 
-	// 玩家胶囊体碰撞通道
 	GetCapsuleComponent()->InitCapsuleSize(42.0f, 96.0f);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel3);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Overlap);
 }
 
-// Called when the game starts or when spawned
 void AHikariPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
-// Called every frame
 void AHikariPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
-// Called to bind functionality to input
 void AHikariPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	// 右键攻击（DefaultInput.ini 已配好 RightClickAttack = 鼠标右键）
-	PlayerInputComponent->BindAction("RightClickAttack", IE_Pressed, this, &AHikariPlayerCharacter::OnAttack);
+	// 右键（预留，暂时无用）
+	PlayerInputComponent->BindAction("RightClickAttack", IE_Pressed, this, &AHikariPlayerCharacter::OnAttackInput);
+
+	// EnhancedInput WASD + 疾跑
+	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	if (!EnhancedInput) return;
+
+	if (MoveHorizontalAction)
+		EnhancedInput->BindAction(MoveHorizontalAction, ETriggerEvent::Triggered, this, &AHikariPlayerCharacter::MoveHorizontal);
+	if (MoveVerticalAction)
+		EnhancedInput->BindAction(MoveVerticalAction, ETriggerEvent::Triggered, this, &AHikariPlayerCharacter::MoveVertical);
+	if (SprintAction)
+	{
+		EnhancedInput->BindAction(SprintAction, ETriggerEvent::Started, this, &AHikariPlayerCharacter::StartSprint);
+		EnhancedInput->BindAction(SprintAction, ETriggerEvent::Completed, this, &AHikariPlayerCharacter::StopSprint);
+		EnhancedInput->BindAction(SprintAction, ETriggerEvent::Canceled, this, &AHikariPlayerCharacter::StopSprint);
+	}
+	if (AttackAction)
+		EnhancedInput->BindAction(AttackAction, ETriggerEvent::Started, this, &AHikariPlayerCharacter::OnAttack);
 }
+
+// ── 移动 ──
+
+void AHikariPlayerCharacter::MoveHorizontal(const FInputActionValue& Value)
+{
+	if (!CanMove()) return;
+	float AxisValue = Value.Get<float>();
+	if (FMath::IsNearlyZero(AxisValue)) return;
+
+	const FVector Dir = (FVector::RightVector - FVector::ForwardVector).GetSafeNormal();
+	AddMovementInput(Dir, AxisValue);
+}
+
+void AHikariPlayerCharacter::MoveVertical(const FInputActionValue& Value)
+{
+	if (!CanMove()) return;
+	float AxisValue = Value.Get<float>();
+	if (FMath::IsNearlyZero(AxisValue)) return;
+
+	const FVector Dir = (FVector::ForwardVector + FVector::RightVector).GetSafeNormal();
+	AddMovementInput(Dir, AxisValue);
+}
+
+// ── 疾跑 ──
+
+void AHikariPlayerCharacter::StartSprint()
+{
+	if (CurrentActionState == EHikariActionState::Attacking) CancelAttack();
+	if (!CanMove()) return;
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+void AHikariPlayerCharacter::StopSprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+// ── 状态 ──
+
+bool AHikariPlayerCharacter::CanMove() const
+{
+	return CurrentActionState == EHikariActionState::Normal;
+}
+
+bool AHikariPlayerCharacter::CanStartAction() const
+{
+	return CurrentActionState == EHikariActionState::Normal;
+}
+
+void AHikariPlayerCharacter::SetActionState(EHikariActionState NewState)
+{
+	if (CurrentActionState == NewState) return;
+	CurrentActionState = NewState;
+}
+
+// ── 攻击动画（左键） ──
+
+void AHikariPlayerCharacter::OnAttackInput()
+{
+	BeginAttack();
+}
+
+void AHikariPlayerCharacter::BeginAttack()
+{
+	if (!CanStartAction()) return;
+	if (!AttackMontage)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AttackMontage is not set."));
+		return;
+	}
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (!AnimInstance) return;
+
+	SetActionState(EHikariActionState::Attacking);
+
+	float MontageLength = PlayAnimMontage(AttackMontage);
+	if (MontageLength <= 0.0f)
+	{
+		SetActionState(EHikariActionState::Normal);
+		return;
+	}
+
+	FOnMontageEnded Delegate;
+	Delegate.BindUObject(this, &AHikariPlayerCharacter::OnAttackMontageEnded);
+	AnimInstance->Montage_SetEndDelegate(Delegate, AttackMontage);
+}
+
+void AHikariPlayerCharacter::EndAttack()
+{
+	if (CurrentActionState != EHikariActionState::Attacking) return;
+	SetActionState(EHikariActionState::Normal);
+}
+
+void AHikariPlayerCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	if (Montage != AttackMontage) return;
+	EndAttack();
+}
+
+void AHikariPlayerCharacter::CancelAttack()
+{
+	if (CurrentActionState != EHikariActionState::Attacking) return;
+	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+		AnimInstance->Montage_Stop(AttackCancelBlendOutTime, AttackMontage);
+	SetActionState(EHikariActionState::Normal);
+	UE_LOG(LogTemp, Log, TEXT("Hikari Attack Canceled"));
+}
+
+// ── 左键攻击（动画 + 伤害范围） ──
 
 void AHikariPlayerCharacter::OnAttack()
 {
-	if (bIsDead || !AttackAreaClass) return;
+	if (bIsDead) return;
+
+	// 左键同时播放攻击动画并生成伤害范围
+	BeginAttack();
+
+	if (!AttackAreaClass) return;
 
 	FActorSpawnParameters Params;
 	Params.Owner = this;
@@ -73,6 +198,8 @@ void AHikariPlayerCharacter::OnAttack()
 		AttackArea->Initialize(0.5f, 0.0f, 300.0f, true, false, true);
 	}
 }
+
+// ── 受伤与死亡 ──
 
 void AHikariPlayerCharacter::HandleDamage(float DamageAmount)
 {

@@ -28,7 +28,6 @@ public class Test_GamePlay : ModuleRules
 		PublicIncludePaths.AddRange(new string[] {
 			"Test_GamePlay",
 			"Test_GamePlay/Common",
-			"Test_GamePlay/Player",
 			"Test_GamePlay/Variant_Strategy",
 			"Test_GamePlay/Variant_Strategy/UI",
 			"Test_GamePlay/Variant_TwinStick",

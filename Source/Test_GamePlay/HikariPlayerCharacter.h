@@ -7,10 +7,21 @@
 #include "HikariPlayerCharacter.generated.h"
 
 class UInputAction;
+class UAnimMontage;
 class AAttackAreaBase;
 struct FInputActionValue;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerDeathSignature, AActor*, DeadPlayer);
+
+UENUM(BlueprintType)
+enum class EHikariActionState : uint8
+{
+	Normal		UMETA(DisplayName = "Normal"),
+	Attacking	UMETA(DisplayName = "Attacking"),
+	Dodging		UMETA(DisplayName = "Dodging"),
+	HitStun		UMETA(DisplayName = "HitStun"),
+	Dead		UMETA(DisplayName = "Dead")
+};
 
 UCLASS()
 class TEST_GAMEPLAY_API AHikariPlayerCharacter : public ACharacter
@@ -91,9 +102,8 @@ void StopSprint();
 
 	// 取消当前攻击
 	void CancelAttack();
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Stats", meta = (ClampMin = "1.0"))
 	float MaxHealth = 100.0f;
@@ -116,7 +126,6 @@ public:
 protected:
 	void Die();
 	void OnAttack();
-	void OnSkill();
 
 	/** 攻击范围蓝图类（在蓝图中赋值） */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
