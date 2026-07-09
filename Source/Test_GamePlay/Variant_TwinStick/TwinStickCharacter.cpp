@@ -2,6 +2,7 @@
 
 
 #include "TwinStickCharacter.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -45,6 +46,9 @@ ATwinStickCharacter::ATwinStickCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 640.0f, 0.0f);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
+
+	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel3);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 }
 
 void ATwinStickCharacter::BeginPlay()

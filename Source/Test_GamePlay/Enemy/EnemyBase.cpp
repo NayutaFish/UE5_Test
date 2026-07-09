@@ -2,9 +2,13 @@
 
 #include "Enemy/EnemyBase.h"
 
+#include "Common/AttackAreaBase.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Engine/World.h"
 #include "Test_GamePlay.h"
+#include "TimerManager.h"
 
 AEnemyBase::AEnemyBase()
 {
@@ -13,8 +17,20 @@ AEnemyBase::AEnemyBase()
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
 	RootComponent = SceneRoot;
 
+	// 胶囊体碰撞
+	CapsuleCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollision"));
+	CapsuleCollision->SetupAttachment(SceneRoot);
+	CapsuleCollision->SetCapsuleHalfHeight(50.0f);
+	CapsuleCollision->SetCapsuleRadius(40.0f);
+	CapsuleCollision->SetCollisionObjectType(ECC_GameTraceChannel2);    // EnemyHitbox
+	CapsuleCollision->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Overlap); // 响应伤害
+	CapsuleCollision->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	CapsuleCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
+
+	// 网格（仅显示用，碰撞走胶囊体）
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(SceneRoot);
+	Mesh->SetupAttachment(CapsuleCollision);
+	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AEnemyBase::BeginPlay()
@@ -24,10 +40,38 @@ void AEnemyBase::BeginPlay()
 	CurrentHealth = MaxHealth;
 	bIsDead = false;
 
-	FTimerHandle DieTimerHandle;
+	StartAttackTimer();
+}
 
-	
-	
+void AEnemyBase::StartAttackTimer()
+{
+	if (!AttackAreaClass) return;
+
+	GetWorldTimerManager().SetTimer(
+		AttackTimerHandle,
+		this,
+		&AEnemyBase::OnAttackTimer,
+		AttackInterval,
+		true,
+		AttackInterval
+	);
+}
+
+void AEnemyBase::OnAttackTimer()
+{
+	if (bIsDead || !AttackAreaClass) return;
+
+	FActorSpawnParameters Params;
+	Params.Owner = this;
+
+	if (AAttackAreaBase* AttackArea = GetWorld()->SpawnActor<AAttackAreaBase>(
+			AttackAreaClass,
+			GetActorLocation() + GetActorForwardVector() * 80.0f,
+			GetActorRotation(),
+			Params))
+	{
+		AttackArea->Initialize(3.0f, 500.0f, 60.0f, true);
+	}
 }
 
 void AEnemyBase::ApplyDamageToEnemy(float DamageAmount)

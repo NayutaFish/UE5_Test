@@ -16,6 +16,8 @@ ATest_GamePlayCharacter::ATest_GamePlayCharacter()
 {
 	// 设置胶囊体碰撞大小（半径42，高96）
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel3);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 
 	// 不让角色随控制器旋转（由鼠标控制方向）
 	bUseControllerRotationPitch = false;

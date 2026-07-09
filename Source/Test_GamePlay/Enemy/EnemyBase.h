@@ -8,6 +8,8 @@
 
 class UStaticMeshComponent;
 class USceneComponent;
+class UCapsuleComponent;
+class AAttackAreaBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDeathSignature, AActor*, DeadEnemy);
 
@@ -32,6 +34,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy")
 	TObjectPtr<USceneComponent> SceneRoot;
 
+	/** 碰撞体胶囊 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy")
+	TObjectPtr<UCapsuleComponent> CapsuleCollision;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy")
 	TObjectPtr<UStaticMeshComponent> Mesh;
 
@@ -48,6 +54,14 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Enemy|Events")
 	FOnEnemyDeathSignature OnEnemyDeath;
 
+	/** 攻击范围蓝图类（在蓝图中赋值） */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy|Attack")
+	TSubclassOf<AAttackAreaBase> AttackAreaClass;
+
+	/** 攻击间隔（秒） */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy|Attack", meta = (ClampMin = "0.5"))
+	float AttackInterval = 5.0f;
+
 public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 	void ApplyDamageToEnemy(float DamageAmount);
@@ -57,4 +71,8 @@ public:
 
 protected:
 	void Die();
+	void StartAttackTimer();
+	void OnAttackTimer();
+
+	FTimerHandle AttackTimerHandle;
 };

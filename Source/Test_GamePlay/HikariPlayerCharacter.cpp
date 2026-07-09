@@ -2,7 +2,10 @@
 
 
 #include "HikariPlayerCharacter.h"
+#include "Common/AttackAreaBase.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Engine/World.h"
 
 // Sets default values
 AHikariPlayerCharacter::AHikariPlayerCharacter()
@@ -43,5 +46,45 @@ void AHikariPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	// 右键攻击（DefaultInput.ini 已配好 RightClickAttack = 鼠标右键）
+	PlayerInputComponent->BindAction("RightClickAttack", IE_Pressed, this, &AHikariPlayerCharacter::OnAttack);
 }
 
+void AHikariPlayerCharacter::OnAttack()
+{
+	if (bIsDead || !AttackAreaClass) return;
+
+	FActorSpawnParameters Params;
+	Params.Owner = this;
+	Params.Instigator = this;
+
+	if (AAttackAreaBase* AttackArea = GetWorld()->SpawnActor<AAttackAreaBase>(
+			AttackAreaClass,
+			GetActorLocation() + GetActorForwardVector() * 100.0f,
+			GetActorRotation(),
+			Params))
+	{
+		AttackArea->Initialize(3.0f, 200.0f, 300.0f, true);
+	}
+}
+
+void AHikariPlayerCharacter::HandleDamage(float DamageAmount)
+{
+	if (bIsDead || DamageAmount <= 0.0f) return;
+	CurrentHealth = FMath::Max(0.0f, CurrentHealth - DamageAmount);
+	if (CurrentHealth <= 0.0f) Die();
+}
+
+void AHikariPlayerCharacter::TestDie()
+{
+	Die();
+}
+
+void AHikariPlayerCharacter::Die()
+{
+	if (bIsDead) return;
+	bIsDead = true;
+	CurrentHealth = 0.0f;
+	OnPlayerDeath.Broadcast(this);
+	Destroy();
+}

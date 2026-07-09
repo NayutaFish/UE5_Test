@@ -23,6 +23,9 @@ ATwinStickNPC::ATwinStickNPC()
 	// 配置继承的组件
 	GetCapsuleComponent()->SetCapsuleRadius(45.0f);
 	GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
+	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel2);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Overlap);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 
 	GetMesh()->SetCollisionProfileName(FName("NoCollision"));
 
