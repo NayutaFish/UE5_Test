@@ -23,6 +23,7 @@ AHikariPlayerCharacter::AHikariPlayerCharacter()
 	// 不使用 Controller Desired Rotation，避免和移动朝向旋转打架
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	// 转身速度，Z 轴是水平转向
+	//Frotator(Pitch,Yaw,Roll)
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
 
 	// 玩家胶囊体碰撞通道
@@ -35,7 +36,7 @@ AHikariPlayerCharacter::AHikariPlayerCharacter()
 void AHikariPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
 // Called every frame
