@@ -9,20 +9,10 @@ AAttackAreaBase::AAttackAreaBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
-	RootComponent = SceneRoot;
-
-	// 创建 BoxCollider，挂在根节点下
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
-	CollisionBox->SetupAttachment(SceneRoot);
+	RootComponent = CollisionBox;
 	CollisionBox->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
-	// 碰撞体设为 DamageArea 通道，默认忽略所有，只检测 EnemyHitbox
-	CollisionBox->SetCollisionObjectType(ECC_GameTraceChannel1); // DamageArea
-	CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
-	CollisionBox->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Overlap); // 检测敌人
-	CollisionBox->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap); // 检测障碍
 
-	// 绑定碰撞事件
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AAttackAreaBase::OnOverlapBegin);
 }
 
@@ -30,11 +20,41 @@ void AAttackAreaBase::BeginPlay()
 {
 	Super::BeginPlay();
 	ElapsedTime = 0.0f;
+	SetupCollision();
+}
+
+void AAttackAreaBase::SetupCollision()
+{
+	// 设为 DamageArea 通道，忽略所有
+	CollisionBox->SetCollisionObjectType(ECC_GameTraceChannel1);
+	CollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+
+	// 同时检测敌人和玩家
+	CollisionBox->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Overlap);
+	CollisionBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
+
+	if (bDetectObstacle)
+	{
+		// 障碍物检测改用射线，不依赖碰撞响应矩阵
+	}
 }
 
 void AAttackAreaBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	// 障碍物检测（射线扫描前方，不依赖碰撞系统）
+	if (bDetectObstacle && Speed > 0.0f)
+	{
+		FHitResult Hit;
+		FVector Start = GetActorLocation();
+		FVector End = Start + GetActorForwardVector() * Speed * DeltaTime * 2.0f;
+		if (GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_WorldStatic))
+		{
+			Destroy();
+			return;
+		}
+	}
 
 	ElapsedTime += DeltaTime;
 	if (ElapsedTime >= LifeTime)
@@ -49,12 +69,17 @@ void AAttackAreaBase::Tick(float DeltaTime)
 	}
 }
 
-void AAttackAreaBase::Initialize(float InLifeTime, float InSpeed, float InDamage, bool bEnemyOnly)
+void AAttackAreaBase::Initialize(float InLifeTime, float InSpeed, float InDamage, bool bEnemyOnly, bool bObstacle, bool bMelee)
 {
 	LifeTime = InLifeTime;
 	Speed = InSpeed;
 	DamageValue = InDamage;
-	bDetectEnemyOnly = bEnemyOnly;
+	bDamageOpponentOnly = bEnemyOnly;
+	bDetectObstacle = bObstacle;
+	bIsMeleeAttack = bMelee;
+
+	// 立即设置碰撞，不等 BeginPlay
+	SetupCollision();
 }
 
 void AAttackAreaBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -62,21 +87,25 @@ void AAttackAreaBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 	bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (!OtherActor || OtherActor == this || OtherActor == GetOwner()) return;
+
 	if (!IsValidTarget(OtherActor)) return;
 
 	ApplyDamage(OtherActor);
-	Destroy();
+
+	// 远程攻击（子弹/射弹）打到目标后 0.1s 销毁
+	// 近战攻击不销毁，等 LifeTime 自然结束
+	if (!bIsMeleeAttack)
+	{
+		SetLifeSpan(0.1f);
+	}
 }
 
 void AAttackAreaBase::ApplyDamage_Implementation(AActor* Target)
 {
-	// 默认伤害逻辑：根据目标类型调用对应的受伤接口
-	// 如果目标是敌人类
 	if (AEnemyBase* Enemy = Cast<AEnemyBase>(Target))
 	{
 		Enemy->ApplyDamageToEnemy(DamageValue);
 	}
-	// 如果目标是玩家角色
 	else if (AHikariPlayerCharacter* Player = Cast<AHikariPlayerCharacter>(Target))
 	{
 		Player->HandleDamage(DamageValue);
@@ -85,10 +114,8 @@ void AAttackAreaBase::ApplyDamage_Implementation(AActor* Target)
 
 bool AAttackAreaBase::IsValidTarget_Implementation(AActor* Target)
 {
-	if (!bDetectEnemyOnly) return true;
+	if (!bDamageOpponentOnly) return true;
 
-	// 如果攻击者是玩家 → 只检测敌人
-	// 如果攻击者是敌人 → 只检测玩家
 	if (GetOwner() && GetOwner()->IsA<AHikariPlayerCharacter>())
 	{
 		return Target->IsA<AEnemyBase>();

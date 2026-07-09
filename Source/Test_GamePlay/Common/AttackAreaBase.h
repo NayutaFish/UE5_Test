@@ -15,9 +15,7 @@ class TEST_GAMEPLAY_API AAttackAreaBase : public AActor
 public:
 	AAttackAreaBase();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<USceneComponent> SceneRoot;
-
+	/** 碰撞体（同时也是根组件） */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UBoxComponent> CollisionBox;
 
@@ -30,14 +28,25 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	float DamageValue = 10.0f;
 
+	/** 只伤害敌对目标？
+	 *  true  → 玩家打敌人，敌人打玩家（不会误伤自己人）
+	 *  false → 不分敌我，碰到谁伤谁 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Filter")
-	bool bDetectEnemyOnly = true;
+	bool bDamageOpponentOnly = true;
+
+	/** 检测障碍物？子弹类开启，碰到墙壁自动销毁 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Filter")
+	bool bDetectObstacle = false;
+
+	/** 是否为近战攻击？true=伤害后不销毁，等 LifeTime 结束 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
+	bool bIsMeleeAttack = false;
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Attack")
-	void Initialize(float InLifeTime, float InSpeed, float InDamage, bool bEnemyOnly);
+	void Initialize(float InLifeTime, float InSpeed, float InDamage, bool bEnemyOnly, bool bObstacle = false, bool bMelee = false);
 
 	UFUNCTION()
 	virtual void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -45,6 +54,8 @@ public:
 		bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
+	void SetupCollision();
+
 	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
 	void ApplyDamage(AActor* Target);
 	virtual void ApplyDamage_Implementation(AActor* Target);

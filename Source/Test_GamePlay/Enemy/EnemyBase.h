@@ -7,7 +7,6 @@
 #include "EnemyBase.generated.h"
 
 class UStaticMeshComponent;
-class USceneComponent;
 class UCapsuleComponent;
 class AAttackAreaBase;
 
@@ -31,10 +30,7 @@ protected:
 	virtual void BeginPlay() override;
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy")
-	TObjectPtr<USceneComponent> SceneRoot;
-
-	/** 碰撞体胶囊 */
+	/** 胶囊体（同时也是根组件） */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy")
 	TObjectPtr<UCapsuleComponent> CapsuleCollision;
 

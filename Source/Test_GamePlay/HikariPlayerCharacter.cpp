@@ -24,7 +24,11 @@ AHikariPlayerCharacter::AHikariPlayerCharacter()
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	// 转身速度，Z 轴是水平转向
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
-	
+
+	// 玩家胶囊体碰撞通道
+	GetCapsuleComponent()->InitCapsuleSize(42.0f, 96.0f);
+	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel3);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Overlap);
 }
 
 // Called when the game starts or when spawned
@@ -57,6 +61,7 @@ void AHikariPlayerCharacter::OnAttack()
 	FActorSpawnParameters Params;
 	Params.Owner = this;
 	Params.Instigator = this;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	if (AAttackAreaBase* AttackArea = GetWorld()->SpawnActor<AAttackAreaBase>(
 			AttackAreaClass,
@@ -64,7 +69,7 @@ void AHikariPlayerCharacter::OnAttack()
 			GetActorRotation(),
 			Params))
 	{
-		AttackArea->Initialize(3.0f, 200.0f, 300.0f, true);
+		AttackArea->Initialize(0.5f, 0.0f, 300.0f, true, false, true);
 	}
 }
 

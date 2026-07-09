@@ -4,7 +4,6 @@
 
 #include "Common/AttackAreaBase.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/World.h"
 #include "Test_GamePlay.h"
@@ -14,12 +13,9 @@ AEnemyBase::AEnemyBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
-	RootComponent = SceneRoot;
-
-	// 胶囊体碰撞
+	// 胶囊体同时作为根组件
 	CapsuleCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollision"));
-	CapsuleCollision->SetupAttachment(SceneRoot);
+	RootComponent = CapsuleCollision;
 	CapsuleCollision->SetCapsuleHalfHeight(50.0f);
 	CapsuleCollision->SetCapsuleRadius(40.0f);
 	CapsuleCollision->SetCollisionObjectType(ECC_GameTraceChannel2);    // EnemyHitbox
@@ -63,6 +59,7 @@ void AEnemyBase::OnAttackTimer()
 
 	FActorSpawnParameters Params;
 	Params.Owner = this;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	if (AAttackAreaBase* AttackArea = GetWorld()->SpawnActor<AAttackAreaBase>(
 			AttackAreaClass,
@@ -70,7 +67,7 @@ void AEnemyBase::OnAttackTimer()
 			GetActorRotation(),
 			Params))
 	{
-		AttackArea->Initialize(3.0f, 500.0f, 60.0f, true);
+		AttackArea->Initialize(3.0f, 500.0f, 60.0f, true, true, false);
 	}
 }
 
