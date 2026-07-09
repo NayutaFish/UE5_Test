@@ -6,6 +6,8 @@
 #include "InputAction.h"
 #include "InputActionValue.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Animation/AnimInstance.h"
+#include "Animation/AnimMontage.h"
 
 // Sets default values
 AHikariPlayerCharacter::AHikariPlayerCharacter()
@@ -116,6 +118,18 @@ void AHikariPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 		&AHikariPlayerCharacter::StopSprint
 	);
 }
+
+	if (AttackAction)
+	{
+		// 鼠标左键按下时触发攻击输入
+		// IA_Attack 是 Boolean 类型，所以用 Started 即可
+		EnhancedInputComponent->BindAction(
+			AttackAction,
+			ETriggerEvent::Started,
+			this,
+			&AHikariPlayerCharacter::OnAttackInput
+		);
+	}
 }
 
 void AHikariPlayerCharacter::MoveHorizontal(const FInputActionValue& Value)
@@ -124,6 +138,11 @@ void AHikariPlayerCharacter::MoveHorizontal(const FInputActionValue& Value)
 	// A 通常是 -1
 	// D 通常是  1
 	const float AxisValue = Value.Get<float>();
+
+	if (!CanMove())
+	{
+		return;
+	}
 
 	if (FMath::IsNearlyZero(AxisValue))
 	{
@@ -148,6 +167,11 @@ void AHikariPlayerCharacter::MoveVertical(const FInputActionValue& Value)
 	// S 通常是 -1
 	const float AxisValue = Value.Get<float>();
 
+	if (!CanMove())
+	{
+		return;
+	}
+
 	if (FMath::IsNearlyZero(AxisValue))
 	{
 		return;
@@ -165,10 +189,156 @@ void AHikariPlayerCharacter::MoveVertical(const FInputActionValue& Value)
 }
 void AHikariPlayerCharacter::StartSprint()
 {
+	// Shift 可以中断攻击
+	if (CurrentActionState == EHikariActionState::Attacking)
+	{
+		CancelAttack();
+	}
+
+	// 如果取消攻击后仍然不能移动，就不进入疾跑
+	// 例如以后 Dead / HitStun / Dodging 状态
+	if (!CanMove())
+	{
+		return;
+	}
+
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 }
 
 void AHikariPlayerCharacter::StopSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+bool AHikariPlayerCharacter::CanMove() const
+{
+	// 第一版规则：
+	// 只有 Normal 状态可以移动
+	// Attacking / Dodging / HitStun / Dead 都不能移动
+	return CurrentActionState == EHikariActionState::Normal;
+}
+
+bool AHikariPlayerCharacter::CanStartAction() const
+{
+	// 第一版规则：
+	// 只有 Normal 状态可以开始新的动作
+	// 这样可以防止攻击中再次攻击
+	return CurrentActionState == EHikariActionState::Normal;
+}
+
+void AHikariPlayerCharacter::SetActionState(EHikariActionState NewState)
+{
+	// 如果新状态和当前状态一样，就不用重复设置
+	if (CurrentActionState == NewState)
+	{
+		return;
+	}
+
+	CurrentActionState = NewState;
+}
+
+void AHikariPlayerCharacter::OnAttackInput()
+{
+	// 输入函数只负责接收输入
+	// 真正的攻击逻辑交给 BeginAttack
+	//UE_LOG(LogTemp, Warning, TEXT("Attack Input Received"));//用于测试
+	BeginAttack();
+	
+}
+
+void AHikariPlayerCharacter::BeginAttack()
+{
+	//UE_LOG(LogTemp, Warning, TEXT("BeginAttack Called"));//用于测试
+	// 如果当前不能开始动作，就直接结束
+	// 例如：攻击中、闪避中、受击中、死亡
+	if (!CanStartAction())
+	{
+		return;
+	}
+
+	// 如果 BP_Hikari 里没有指定 AttackMontage，就不能播放攻击动画
+	if (!AttackMontage)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AttackMontage is not set."));
+		return;
+	}
+
+	// GetMesh() 是角色的骨骼网格体组件
+	// GetAnimInstance() 是这个 Mesh 当前使用的动画蓝图实例
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (!AnimInstance)
+	{
+		return;
+	}
+
+	// 进入攻击状态
+	SetActionState(EHikariActionState::Attacking);
+
+	// 播放攻击 Montage
+	// 返回值是 Montage 的播放时长
+	const float MontageLength = PlayAnimMontage(AttackMontage);
+
+	// 如果播放失败，MontageLength 可能小于等于 0
+	// 这时要把状态恢复成 Normal，避免角色卡死在 Attacking
+	if (MontageLength <= 0.0f)
+	{
+		SetActionState(EHikariActionState::Normal);
+		return;
+	}
+
+	// 创建 Montage 结束委托
+	// 作用是：当这个 Montage 播放结束时，自动调用 OnAttackMontageEnded
+	FOnMontageEnded MontageEndedDelegate;
+	MontageEndedDelegate.BindUObject(this, &AHikariPlayerCharacter::OnAttackMontageEnded);
+
+	// 把结束委托绑定到 AttackMontage
+	AnimInstance->Montage_SetEndDelegate(MontageEndedDelegate, AttackMontage);
+
+	UE_LOG(LogTemp, Log, TEXT("Hikari Begin Attack"));
+}
+
+void AHikariPlayerCharacter::EndAttack()
+{
+	// 如果当前不是攻击状态，就不处理
+	if (CurrentActionState != EHikariActionState::Attacking)
+	{
+		return;
+	}
+
+	// 攻击结束，恢复 Normal 状态
+	SetActionState(EHikariActionState::Normal);
+
+	UE_LOG(LogTemp, Log, TEXT("Hikari End Attack"));
+}
+
+void AHikariPlayerCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	// 确认结束的是我们的攻击 Montage
+	// 避免以后别的 Montage 结束时误触发 EndAttack
+	if (Montage != AttackMontage)
+	{
+		return;
+	}
+
+	EndAttack();
+}
+
+void AHikariPlayerCharacter::CancelAttack()
+{
+	// 只有攻击状态才需要取消
+	if (CurrentActionState != EHikariActionState::Attacking)
+	{
+		return;
+	}
+
+	// 停止攻击 Montage
+	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+	{
+		AnimInstance->Montage_Stop(AttackCancelBlendOutTime, AttackMontage);
+	}
+
+	// 恢复正常状态
+	SetActionState(EHikariActionState::Normal);
+
+	UE_LOG(LogTemp, Log, TEXT("Hikari Attack Canceled"));
 }
