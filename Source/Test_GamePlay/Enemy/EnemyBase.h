@@ -148,6 +148,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 	void TestDie();
 
-protected:
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
 	void Die();
 };

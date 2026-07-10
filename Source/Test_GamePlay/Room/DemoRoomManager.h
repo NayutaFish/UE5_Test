@@ -50,11 +50,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room|Spawn", meta = (ClampMin = "0.1", Units = "s"))
 	float SpawnCheckInterval = 2.0f;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Room|Runtime")
-	int32 AliveEnemyCount = 0;
+	/** 目标歼敌数（达到后清除房间） */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room|Spawn", meta = (ClampMin = "1"))
+	int32 TargetEliminateCount = 5;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Room|Runtime")
-	TArray<TObjectPtr<AEnemyBase>> SpawnedEnemies;
+	int32 AliveEnemyCount = 0;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Room|Runtime")
 	TArray<TObjectPtr<AEnemySpawnPoint>> SpawnPoints;
@@ -71,15 +72,20 @@ public:
 
 private:
 	/** 当前房间敌人被歼灭数 */
-	UPROPERTY(VisibleAnywhere, Category = "Room|Runtime")
 	int32 EliminatedEnemyCount = 0;
 
 	/** 敌人刷新余量 */
-	UPROPERTY(VisibleAnywhere, Category = "Room|Runtime")
 	int32 SpawnQuota = 0;
+
+	/** 存活敌人列表 */
+	UPROPERTY()
+	TArray<TObjectPtr<AEnemyBase>> ActiveEnemyList;
 
 	/** 当前房间敌人刷新计时器 */
 	FTimerHandle SpawnCheckTimerHandle;
+
+	/** 定时检测刷新 */
+	void CheckAndSpawn();
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Room")
@@ -87,9 +93,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Room")
 	void StartRoom();
-
-	UFUNCTION(BlueprintCallable, Category = "Room")
-	void SpawnWave();
 
 	UFUNCTION(BlueprintCallable, Category = "Room")
 	void CheckRoomClear();

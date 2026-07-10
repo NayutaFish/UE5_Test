@@ -60,6 +60,8 @@ void ARoguelikeRewardManager::ShowRewardAfterRoomClear()
 	InputMode.SetWidgetToFocus(ActiveRewardWidget->TakeWidget());
 	PlayerController->SetInputMode(InputMode);
 	PlayerController->SetShowMouseCursor(true);
+	PlayerController->SetIgnoreMoveInput(true);
+	PlayerController->SetIgnoreLookInput(true);
 	UE_LOG(LogRoguelike, Log, TEXT("Room clear reward shown with %d option(s)."), CurrentRewardOptions.Num());
 }
 
@@ -164,6 +166,8 @@ void ARoguelikeRewardManager::CloseRewardUI()
 		InputMode.SetHideCursorDuringCapture(false);
 		PlayerController->SetInputMode(InputMode);
 		PlayerController->SetShowMouseCursor(true);
+		PlayerController->SetIgnoreMoveInput(false);
+		PlayerController->SetIgnoreLookInput(false);
 	}
 }
 

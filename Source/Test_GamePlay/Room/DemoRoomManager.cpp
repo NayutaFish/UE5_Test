@@ -87,94 +87,93 @@ void ADemoRoomManager::StartRoom()
 
 	UE_LOG(LogTest_GamePlay, Log, TEXT("Room started."));
 
-	SpawnWave();
+	// 初始化
+	AliveEnemyCount = 0;
+	ActiveEnemyList.Empty();
+	EliminatedEnemyCount = 0;
+
+	// 启动定时刷新检测
+	GetWorldTimerManager().SetTimer(SpawnCheckTimerHandle, this,
+		&ADemoRoomManager::CheckAndSpawn, SpawnCheckInterval, true, 0.0f);
 }
 
-void ADemoRoomManager::SpawnWave()
+void ADemoRoomManager::CheckAndSpawn()
 {
+	if (bRoomCleared || SpawnQuota <= 0)
+	{
+		// 如果已无余量且所有敌人都死光了，检查房间清除
+		if (SpawnQuota <= 0 && AliveEnemyCount <= 0)
+		{
+			CheckRoomClear();
+		}
+		return;
+	}
+
 	UWorld* World = GetWorld();
-	if (!World)
-	{
-		return;
-	}
-
-	if (EnemyClasses.IsEmpty())
-	{
-		UE_LOG(LogTest_GamePlay, Error, TEXT("EnemyClasses is empty in DemoRoomManager."));
-		return;
-	}
-
-	if (SpawnPoints.Num() <= 0)
-	{
-		UE_LOG(LogTest_GamePlay, Error, TEXT("No spawn points found."));
-		return;
-	}
-
-	AliveEnemyCount = 0;
-	SpawnedEnemies.Empty();
+	if (!World || EnemyClasses.IsEmpty() || SpawnPoints.Num() <= 0) return;
 
 	int32 ClassIndex = 0;
 	for (AEnemySpawnPoint* SpawnPoint : SpawnPoints)
 	{
-		if (!IsValid(SpawnPoint))
-		{
-			continue;
-		}
+		if (!IsValid(SpawnPoint)) continue;
+		if (SpawnQuota <= 0) break;
+		if (AliveEnemyCount >= MaxEnemyAliveCount) break;
 
-		TSubclassOf<AEnemyBase> ClassToSpawn = EnemyClasses[ClassIndex % EnemyClasses.Num()];
-		if (!ClassToSpawn)
-		{
-			++ClassIndex;
-			continue;
-		}
+		TSubclassOf<AEnemyBase> ClassToSpawn = EnemyClasses[FMath::RandRange(0, EnemyClasses.Num() - 1)];
+		if (!ClassToSpawn) continue;
 
 		AEnemyBase* SpawnedEnemy = World->SpawnActor<AEnemyBase>(
 			ClassToSpawn,
 			SpawnPoint->GetSpawnTransform()
 		);
 
-		if (!IsValid(SpawnedEnemy))
-		{
-			++ClassIndex;
-			continue;
-		}
+		if (!IsValid(SpawnedEnemy)) continue;
 
 		SpawnedEnemy->OnEnemyDeath.AddDynamic(this, &ADemoRoomManager::HandleEnemyDeath);
 
-		SpawnedEnemies.Add(SpawnedEnemy);
+		ActiveEnemyList.Add(SpawnedEnemy);
 		++AliveEnemyCount;
-		++ClassIndex;
+		--SpawnQuota;
 
-		UE_LOG(LogTest_GamePlay, Log, TEXT("Spawned enemy: %s"), *SpawnedEnemy->GetName());
-	}
-
-	UE_LOG(LogTest_GamePlay, Log, TEXT("Wave spawned. AliveEnemyCount = %d"), AliveEnemyCount);
-
-	if (AliveEnemyCount <= 0)
-	{
-		CheckRoomClear();
+		UE_LOG(LogTest_GamePlay, Log, TEXT("Spawned enemy: %s (alive=%d, quota=%d)"),
+			*SpawnedEnemy->GetName(), AliveEnemyCount, SpawnQuota);
 	}
 }
 
 void ADemoRoomManager::HandleEnemyDeath(AActor* DeadEnemy)
 {
 	AEnemyBase* DeadEnemyBase = Cast<AEnemyBase>(DeadEnemy);
-	if (!IsValid(DeadEnemyBase))
-	{
-		return;
-	}
+	if (!IsValid(DeadEnemyBase)) return;
 
-	const int32 RemovedCount = SpawnedEnemies.Remove(DeadEnemyBase);
-	if (RemovedCount <= 0)
-	{
-		return;
-	}
+	const int32 RemovedCount = ActiveEnemyList.Remove(DeadEnemyBase);
+	if (RemovedCount <= 0) return;
 
 	AliveEnemyCount = FMath::Max(0, AliveEnemyCount - RemovedCount);
+	++EliminatedEnemyCount;
 
-	UE_LOG(LogTest_GamePlay, Log, TEXT("Enemy died. AliveEnemyCount = %d"), AliveEnemyCount);
+	UE_LOG(LogTest_GamePlay, Log, TEXT("Enemy died. alive=%d, eliminated=%d, target=%d"),
+		AliveEnemyCount, EliminatedEnemyCount, TargetEliminateCount);
 
-	CheckRoomClear();
+	// 达到目标歼敌数 → 处决剩余敌人 → 房间清除
+	if (EliminatedEnemyCount >= TargetEliminateCount)
+	{
+		// 先取消订阅，再处决，避免递归
+		TArray<TObjectPtr<AEnemyBase>> Remaining = ActiveEnemyList;
+		ActiveEnemyList.Empty();
+
+		for (TObjectPtr<AEnemyBase>& Enemy : Remaining)
+		{
+			if (IsValid(Enemy))
+			{
+				Enemy->OnEnemyDeath.RemoveAll(this);
+				Enemy->Die();
+			}
+		}
+
+		AliveEnemyCount = 0;
+		EliminatedEnemyCount = TargetEliminateCount;
+		CheckRoomClear();
+	}
 }
 
 void ADemoRoomManager::CheckRoomClear()
@@ -185,6 +184,9 @@ void ADemoRoomManager::CheckRoomClear()
 	}
 
 	bRoomCleared = true;
+
+	// 停止刷新计时器
+	GetWorldTimerManager().ClearTimer(SpawnCheckTimerHandle);
 
 	UE_LOG(LogTest_GamePlay, Log, TEXT("Room Clear!"));
 	if (RewardManager)

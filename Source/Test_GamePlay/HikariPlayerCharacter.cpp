@@ -36,6 +36,7 @@ AHikariPlayerCharacter::AHikariPlayerCharacter()
 void AHikariPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	CurrentHealth = MaxHealth;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 
 	// ── 订阅 PlayerInputComponent 事件 ──
