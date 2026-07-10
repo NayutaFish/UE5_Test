@@ -78,3 +78,13 @@ DerivedDataCache/*
 .vscode/
 *.code-workspace
 .idea/
+
+# VSCode local/generated files
+.vscode/
+*.code-workspace
+
+# Rider / JetBrains
+.idea/
+
+# Visual Studio Code C++ cache
+.vscode/ipch/
