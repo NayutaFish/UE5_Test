@@ -10,6 +10,7 @@ class AEnemyBase;
 class AEnemySpawnPoint;
 class AActor;
 class USceneComponent;
+class ARoguelikeRewardManager;
 
 /**
  * Demo room manager.
@@ -55,6 +56,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Room|Runtime")
 	bool bRoomCleared = false;
+
+	/** Optional reward manager notified when this room is cleared. */
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Room|Reward")
+	TObjectPtr<ARoguelikeRewardManager> RewardManager;
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Room")

@@ -9,6 +9,7 @@
 class UInputAction;
 class UAnimMontage;
 class AAttackAreaBase;
+class UHikariSkillComponent;
 struct FInputActionValue;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerDeathSignature, AActor*, DeadPlayer);
@@ -47,6 +48,27 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Attack")
 	void EndAttack();
 
+	UFUNCTION(BlueprintCallable, Category = "Player|Skill")
+	void TryCastSkill1();
+
+	UFUNCTION(BlueprintCallable, Category = "Player|Skill")
+	void TryCastSkill2();
+
+	UFUNCTION(BlueprintCallable, Category = "Player|Skill")
+	void TryCastSkillSlot1();
+
+	UFUNCTION(BlueprintCallable, Category = "Player|Skill")
+	void TryCastSkillSlot2();
+
+	UFUNCTION(BlueprintCallable, Category = "Player|Skill")
+	void TryCastSkillSlot3();
+
+	UFUNCTION(BlueprintPure, Category = "State")
+	bool IsSprinting() const { return bIsSprinting; }
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Skill")
+	TObjectPtr<UHikariSkillComponent> SkillComponent;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -69,6 +91,9 @@ float WalkSpeed = 600.0f;
 // 按住 Shift 时，把 MaxWalkSpeed 设置成这个值
 UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Movement")
 float SprintSpeed = 900.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	bool bIsSprinting = false;
 // 攻击动画蒙太奇
 // 之后在 BP_Hikari 类默认值里指定为 AM_Hikari_Attack_01
 UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
