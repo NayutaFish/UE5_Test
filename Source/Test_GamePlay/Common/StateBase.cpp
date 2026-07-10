@@ -26,3 +26,8 @@ void UStateBase::OnExit_Implementation()
 {
 	// 退出状态时的逻辑，子类可重写
 }
+
+void UStateBase::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+}

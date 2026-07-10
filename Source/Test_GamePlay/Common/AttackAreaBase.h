@@ -46,7 +46,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Attack")
-	void Initialize(float InLifeTime, float InSpeed, float InDamage, bool InDamageOpponentOnly, bool InObstacle = false, bool InMelee = false);
+	void Initialize(float InLifeTime, float InSpeed, float InDamage, bool InDamageOpponentOnly, bool InObstacle = false, bool InMelee = false, AActor* InFollowTarget = nullptr);
 
 	UFUNCTION()
 	virtual void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -66,4 +66,11 @@ protected:
 
 private:
 	float ElapsedTime = 0.0f;
+
+	/** 跟随的目标（非空则每帧同步位置） */
+	UPROPERTY()
+	TObjectPtr<AActor> FollowTarget;
+
+	/** 跟随目标时的相对偏移 */
+	FVector FollowOffset = FVector::ZeroVector;
 };

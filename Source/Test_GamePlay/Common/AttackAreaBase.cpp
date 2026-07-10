@@ -67,9 +67,15 @@ void AAttackAreaBase::Tick(float DeltaTime)
 	{
 		AddActorWorldOffset(GetActorForwardVector() * Speed * DeltaTime);
 	}
+
+	// 跟随目标（保持初始相对偏移）
+	if (FollowTarget)
+	{
+		SetActorLocation(FollowTarget->GetActorLocation() + FollowOffset);
+	}
 }
 
-void AAttackAreaBase::Initialize(float InLifeTime, float InSpeed, float InDamage, bool InDamageOpponentOnly, bool InObstacle, bool InMelee)
+void AAttackAreaBase::Initialize(float InLifeTime, float InSpeed, float InDamage, bool InDamageOpponentOnly, bool InObstacle, bool InMelee, AActor* InFollowTarget)
 {
 	LifeTime = InLifeTime;
 	Speed = InSpeed;
@@ -77,6 +83,13 @@ void AAttackAreaBase::Initialize(float InLifeTime, float InSpeed, float InDamage
 	bDamageOpponentOnly = InDamageOpponentOnly;
 	bDetectObstacle = InObstacle;
 	bIsMeleeAttack = InMelee;
+	FollowTarget = InFollowTarget;
+
+	// 生成后立即记录与跟随目标的相对偏移
+	if (FollowTarget)
+	{
+		FollowOffset = GetActorLocation() - FollowTarget->GetActorLocation();
+	}
 
 	// 立即设置碰撞，不等 BeginPlay
 	SetupCollision();

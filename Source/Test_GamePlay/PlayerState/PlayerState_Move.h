@@ -7,11 +7,27 @@
 #include "PlayerState_Move.generated.h"
 
 /**
- * 
+ * 移动状态：处理 WASD 移动和 Shift 疾跑，鼠标左键切换到攻击
  */
-UCLASS()
+UCLASS(meta = (BlueprintSpawnableComponent))
 class TEST_GAMEPLAY_API UPlayerState_Move : public UStateBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	UPlayerState_Move();
+
+protected:
+	virtual void OnEnter_Implementation() override;
+	virtual void OnExit_Implementation() override;
+	virtual void Update_Implementation(float DeltaTime) override;
+
+private:
+	void OnMoveX(float Value);
+	void OnMoveY(float Value);
+	void OnShift(float Value);
+	void OnLmb();
+
+	float LastInputTime = 0.0f;
+	float LastShiftTime = 0.0f;
 };

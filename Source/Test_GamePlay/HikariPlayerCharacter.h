@@ -6,11 +6,12 @@
 #include "GameFramework/Character.h"
 #include "HikariPlayerCharacter.generated.h"
 
-class UInputAction;
 class UAnimMontage;
 class AAttackAreaBase;
+class UStateBase;
 class UHikariSkillComponent;
-struct FInputActionValue;
+class UPlayerInputComponent;
+
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerDeathSignature, AActor*, DeadPlayer);
 
@@ -69,31 +70,30 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Skill")
 	TObjectPtr<UHikariSkillComponent> SkillComponent;
 
+	// ── 状态机 ──
+	/** 当前活跃状态组件 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
+	TObjectPtr<UStateBase> CurrentState;
+
+	/** 切换到指定状态（查找对应组件并切入） */
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void SwitchState(TSubclassOf<UStateBase> StateClass);
+
+	// 普通移动速度
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Movement")
+	float WalkSpeed = 600.0f;
+
+	// 疾跑速度
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Movement")
+	float SprintSpeed = 900.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	bool bIsSprinting = false;
+
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-    //用于接收蓝图中的IA_MoveHorizontal和IA_MoveVertical的输入
-    UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category = "Input")
-	TObjectPtr<UInputAction> MoveHorizontalAction;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category = "Input")
-	TObjectPtr<UInputAction> MoveVerticalAction;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-    TObjectPtr<UInputAction> SprintAction;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-    TObjectPtr<UInputAction> AttackAction;
-	// 普通移动速度
-    // EditDefaultsOnly 表示可以在 BP_Hikari 类默认值里调整
-UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Movement")
-float WalkSpeed = 600.0f;
-
-// 疾跑速度
-// 按住 Shift 时，把 MaxWalkSpeed 设置成这个值
-UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Movement")
-float SprintSpeed = 900.0f;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-	bool bIsSprinting = false;
 // 攻击动画蒙太奇
 // 之后在 BP_Hikari 类默认值里指定为 AM_Hikari_Attack_01
 UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
@@ -108,17 +108,6 @@ TObjectPtr<UAnimMontage> AttackMontage;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
 	EHikariActionState CurrentActionState = EHikariActionState::Normal;
 private:
-    void MoveHorizontal(const FInputActionValue& Value);
-	void MoveVertical(const FInputActionValue& Value);
-	// 开始疾跑：按下 Shift 时调用
-void StartSprint();
-
-// 停止疾跑：松开 Shift 时调用
-void StopSprint();
-
-	// 鼠标左键触发 IA_Attack 后调用
-	void OnAttackInput();
-
 	// 攻击 Montage 播放结束时调用
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
@@ -127,6 +116,14 @@ void StopSprint();
 
 	// 取消当前攻击
 	void CancelAttack();
+
+	// ── PlayerInputComponent 事件响应 ──
+	void OnInputLmb();
+	void OnInputRmb();
+	void OnInputSpace();
+	void OnInputQ();
+	void OnInputE();
+	void OnInputF();
 public:
 	virtual void Tick(float DeltaTime) override;
 
@@ -148,11 +145,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player")
 	void TestDie();
 
-protected:
-	void Die();
-	void OnAttack();
-
 	/** 攻击范围蓝图类（在蓝图中赋值） */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	TSubclassOf<AAttackAreaBase> AttackAreaClass;
+
+protected:
+	void Die();
+	void OnAttack();
 };

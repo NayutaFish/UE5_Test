@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(meta = (BlueprintSpawnableComponent))
 class TEST_GAMEPLAY_API UPlayerState_Attack2 : public UStateBase
 {
 	GENERATED_BODY()

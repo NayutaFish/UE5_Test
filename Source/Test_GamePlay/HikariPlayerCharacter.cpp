@@ -3,15 +3,15 @@
 #include "HikariPlayerCharacter.h"
 #include "Common/AttackAreaBase.h"
 #include "Components/CapsuleComponent.h"
-#include "EnhancedInputComponent.h"
-#include "InputCoreTypes.h"
-#include "InputAction.h"
-#include "InputActionValue.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Animation/AnimInstance.h"
 #include "Animation/AnimMontage.h"
 #include "Engine/World.h"
 #include "Skill/HikariSkillComponent.h"
+#include "Input/PlayerInputComponent.h"
+#include "EnhancedInputComponent.h"
+#include "Common/StateBase.h"
+#include "PlayerState/PlayerState_Idle.h"
 
 AHikariPlayerCharacter::AHikariPlayerCharacter()
 {
@@ -37,80 +37,50 @@ void AHikariPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+
+	// ── 订阅 PlayerInputComponent 事件 ──
+	if (UPlayerInputComponent* InputComp = FindComponentByClass<UPlayerInputComponent>())
+	{
+			InputComp->OnRmbDelegate.AddUObject(this, &AHikariPlayerCharacter::OnInputRmb);
+		InputComp->OnSpaceDelegate.AddUObject(this, &AHikariPlayerCharacter::OnInputSpace);
+		InputComp->OnQDelegate.AddUObject(this, &AHikariPlayerCharacter::OnInputQ);
+		InputComp->OnEDelegate.AddUObject(this, &AHikariPlayerCharacter::OnInputE);
+		InputComp->OnFDelegate.AddUObject(this, &AHikariPlayerCharacter::OnInputF);
+	}
+
+	// ── 默认进入 Idle 状态 ──
+	// 自动从角色身上挂载的组件中查找 Idle 状态
+	if (UPlayerState_Idle* Idle = FindComponentByClass<UPlayerState_Idle>())
+	{
+		SwitchState(UPlayerState_Idle::StaticClass());
+	}
 }
 
 void AHikariPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (CurrentState)
+	{
+		CurrentState->Update(DeltaTime);
+	}
 }
 
 void AHikariPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	// 右键（预留，暂时无用）
-	PlayerInputComponent->BindAction("RightClickAttack", IE_Pressed, this, &AHikariPlayerCharacter::OnAttackInput);
-	// 主动技能默认键位：U 为技能 1，I 为技能 2。
-	PlayerInputComponent->BindKey(EKeys::U, IE_Pressed, this, &AHikariPlayerCharacter::TryCastSkill1);
-	PlayerInputComponent->BindKey(EKeys::I, IE_Pressed, this, &AHikariPlayerCharacter::TryCastSkill2);
-
-	// EnhancedInput WASD + 疾跑
-	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-	if (!EnhancedInput) return;
-
-	if (MoveHorizontalAction)
-		EnhancedInput->BindAction(MoveHorizontalAction, ETriggerEvent::Triggered, this, &AHikariPlayerCharacter::MoveHorizontal);
-	if (MoveVerticalAction)
-		EnhancedInput->BindAction(MoveVerticalAction, ETriggerEvent::Triggered, this, &AHikariPlayerCharacter::MoveVertical);
-	if (SprintAction)
+	// 通知 PlayerInputComponent 注册子系统和绑定回调（此时 Controller 和 InputComponent 均已就绪）
+	if (UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInput->BindAction(SprintAction, ETriggerEvent::Started, this, &AHikariPlayerCharacter::StartSprint);
-		EnhancedInput->BindAction(SprintAction, ETriggerEvent::Completed, this, &AHikariPlayerCharacter::StopSprint);
-		EnhancedInput->BindAction(SprintAction, ETriggerEvent::Canceled, this, &AHikariPlayerCharacter::StopSprint);
+		if (UPlayerInputComponent* InputComp = FindComponentByClass<UPlayerInputComponent>())
+		{
+			InputComp->SetupEnhancedInput(EnhancedInput, Cast<APlayerController>(GetController()));
+		}
 	}
-	if (AttackAction)
-		EnhancedInput->BindAction(AttackAction, ETriggerEvent::Started, this, &AHikariPlayerCharacter::OnAttack);
 }
 
-// ── 移动 ──
-
-void AHikariPlayerCharacter::MoveHorizontal(const FInputActionValue& Value)
-{
-	if (!CanMove()) return;
-	float AxisValue = Value.Get<float>();
-	if (FMath::IsNearlyZero(AxisValue)) return;
-
-	const FVector Dir = (FVector::RightVector - FVector::ForwardVector).GetSafeNormal();
-	AddMovementInput(Dir, AxisValue);
-}
-
-void AHikariPlayerCharacter::MoveVertical(const FInputActionValue& Value)
-{
-	if (!CanMove()) return;
-	float AxisValue = Value.Get<float>();
-	if (FMath::IsNearlyZero(AxisValue)) return;
-
-	const FVector Dir = (FVector::ForwardVector + FVector::RightVector).GetSafeNormal();
-	AddMovementInput(Dir, AxisValue);
-}
-
-// ── 疾跑 ──
-
-void AHikariPlayerCharacter::StartSprint()
-{
-	if (CurrentActionState == EHikariActionState::Attacking) CancelAttack();
-	if (!CanMove()) return;
-	bIsSprinting = true;
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
-}
-
-void AHikariPlayerCharacter::StopSprint()
-{
-	bIsSprinting = false;
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-}
-
-// ── 主动技能（输入资产由外部绑定） ──
+// ── 主动技能 ──
 
 void AHikariPlayerCharacter::TryCastSkill1()
 {
@@ -146,6 +116,31 @@ void AHikariPlayerCharacter::TryCastSkillSlot3()
 	}
 }
 
+// ── 状态机 ──
+
+void AHikariPlayerCharacter::SwitchState(TSubclassOf<UStateBase> StateClass)
+{
+	if (!StateClass) return;
+
+	// 查找指定子类的状态组件
+	TArray<UStateBase*> Found;
+	GetComponents(StateClass, Found);
+	if (Found.Num() == 0) return;
+
+	UStateBase* NewState = Found[0];
+	if (NewState == CurrentState) return;
+
+	// 旧状态退出
+	if (CurrentState)
+	{
+		CurrentState->OnExit();
+	}
+
+	// 新状态进入
+	CurrentState = NewState;
+	CurrentState->OnEnter();
+}
+
 // ── 状态 ──
 
 bool AHikariPlayerCharacter::CanMove() const
@@ -165,11 +160,6 @@ void AHikariPlayerCharacter::SetActionState(EHikariActionState NewState)
 }
 
 // ── 攻击动画（左键） ──
-
-void AHikariPlayerCharacter::OnAttackInput()
-{
-	BeginAttack();
-}
 
 void AHikariPlayerCharacter::BeginAttack()
 {
@@ -266,4 +256,38 @@ void AHikariPlayerCharacter::Die()
 	CurrentHealth = 0.0f;
 	OnPlayerDeath.Broadcast(this);
 	Destroy();
+}
+
+// ──────────────────────────────
+// PlayerInputComponent 事件响应
+// ──────────────────────────────
+
+void AHikariPlayerCharacter::OnInputLmb()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, TEXT("左键: LMB"));
+}
+
+void AHikariPlayerCharacter::OnInputRmb()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, TEXT("右键: RMB"));
+}
+
+void AHikariPlayerCharacter::OnInputSpace()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, TEXT("空格: Space"));
+}
+
+void AHikariPlayerCharacter::OnInputQ()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, TEXT("技能: Q"));
+}
+
+void AHikariPlayerCharacter::OnInputE()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, TEXT("技能: E"));
+}
+
+void AHikariPlayerCharacter::OnInputF()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, TEXT("技能: F"));
 }
