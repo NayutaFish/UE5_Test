@@ -46,7 +46,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Attack")
-	void Initialize(float InLifeTime, float InSpeed, float InDamage, bool bEnemyOnly, bool bObstacle = false, bool bMelee = false);
+	void Initialize(float InLifeTime, float InSpeed, float InDamage, bool InDamageOpponentOnly, bool InObstacle = false, bool InMelee = false);
 
 	UFUNCTION()
 	virtual void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

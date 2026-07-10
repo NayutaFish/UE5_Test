@@ -69,14 +69,14 @@ void AAttackAreaBase::Tick(float DeltaTime)
 	}
 }
 
-void AAttackAreaBase::Initialize(float InLifeTime, float InSpeed, float InDamage, bool bEnemyOnly, bool bObstacle, bool bMelee)
+void AAttackAreaBase::Initialize(float InLifeTime, float InSpeed, float InDamage, bool InDamageOpponentOnly, bool InObstacle, bool InMelee)
 {
 	LifeTime = InLifeTime;
 	Speed = InSpeed;
 	DamageValue = InDamage;
-	bDamageOpponentOnly = bEnemyOnly;
-	bDetectObstacle = bObstacle;
-	bIsMeleeAttack = bMelee;
+	bDamageOpponentOnly = InDamageOpponentOnly;
+	bDetectObstacle = InObstacle;
+	bIsMeleeAttack = InMelee;
 
 	// 立即设置碰撞，不等 BeginPlay
 	SetupCollision();
