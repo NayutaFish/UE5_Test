@@ -4,12 +4,14 @@
 #include "Common/AttackAreaBase.h"
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
+#include "InputCoreTypes.h"
 #include "InputAction.h"
 #include "InputActionValue.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Animation/AnimInstance.h"
 #include "Animation/AnimMontage.h"
 #include "Engine/World.h"
+#include "Skill/HikariSkillComponent.h"
 
 AHikariPlayerCharacter::AHikariPlayerCharacter()
 {
@@ -27,6 +29,8 @@ AHikariPlayerCharacter::AHikariPlayerCharacter()
 	GetCapsuleComponent()->InitCapsuleSize(42.0f, 96.0f);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel3);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Overlap);
+
+	SkillComponent = CreateDefaultSubobject<UHikariSkillComponent>(TEXT("SkillComponent"));
 }
 
 void AHikariPlayerCharacter::BeginPlay()
@@ -46,6 +50,9 @@ void AHikariPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 	// 右键（预留，暂时无用）
 	PlayerInputComponent->BindAction("RightClickAttack", IE_Pressed, this, &AHikariPlayerCharacter::OnAttackInput);
+	// 主动技能默认键位：U 为技能 1，I 为技能 2。
+	PlayerInputComponent->BindKey(EKeys::U, IE_Pressed, this, &AHikariPlayerCharacter::TryCastSkill1);
+	PlayerInputComponent->BindKey(EKeys::I, IE_Pressed, this, &AHikariPlayerCharacter::TryCastSkill2);
 
 	// EnhancedInput WASD + 疾跑
 	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
@@ -93,12 +100,50 @@ void AHikariPlayerCharacter::StartSprint()
 {
 	if (CurrentActionState == EHikariActionState::Attacking) CancelAttack();
 	if (!CanMove()) return;
+	bIsSprinting = true;
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 }
 
 void AHikariPlayerCharacter::StopSprint()
 {
+	bIsSprinting = false;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+// ── 主动技能（输入资产由外部绑定） ──
+
+void AHikariPlayerCharacter::TryCastSkill1()
+{
+	TryCastSkillSlot1();
+}
+
+void AHikariPlayerCharacter::TryCastSkill2()
+{
+	TryCastSkillSlot2();
+}
+
+void AHikariPlayerCharacter::TryCastSkillSlot1()
+{
+	if (SkillComponent)
+	{
+		SkillComponent->TryCastSkillSlot(0);
+	}
+}
+
+void AHikariPlayerCharacter::TryCastSkillSlot2()
+{
+	if (SkillComponent)
+	{
+		SkillComponent->TryCastSkillSlot(1);
+	}
+}
+
+void AHikariPlayerCharacter::TryCastSkillSlot3()
+{
+	if (SkillComponent)
+	{
+		SkillComponent->TryCastSkillSlot(2);
+	}
 }
 
 // ── 状态 ──
@@ -217,6 +262,7 @@ void AHikariPlayerCharacter::Die()
 {
 	if (bIsDead) return;
 	bIsDead = true;
+	bIsSprinting = false;
 	CurrentHealth = 0.0f;
 	OnPlayerDeath.Broadcast(this);
 	Destroy();

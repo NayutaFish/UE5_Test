@@ -6,6 +6,7 @@
 #include "Enemy/EnemyBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Room/EnemySpawnPoint.h"
+#include "Roguelike/RoguelikeRewardManager.h"
 #include "Test_GamePlay.h"
 #include "TimerManager.h"
 
@@ -174,5 +175,9 @@ void ADemoRoomManager::CheckRoomClear()
 	bRoomCleared = true;
 
 	UE_LOG(LogTest_GamePlay, Log, TEXT("Room Clear!"));
+	if (RewardManager)
+	{
+		RewardManager->ShowRewardAfterRoomClear();
+	}
 	OnRoomClear();
 }

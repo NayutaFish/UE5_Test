@@ -1,8 +1,10 @@
+/.agents
+/.codex
 /.git
 /.readmes
-/.vs
 /.vscode
 /Content
 /DerivedDataCache
 /Intermediate
 /Saved
+/Scripts
