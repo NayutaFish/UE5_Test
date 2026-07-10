@@ -3,6 +3,7 @@
 #include "PlayerState/PlayerState_Idle.h"
 #include "PlayerState/PlayerState_Move.h"
 #include "PlayerState/PlayerState_Attack1.h"
+#include "PlayerState/PlayerState_Skill1.h"
 #include "Input/PlayerInputComponent.h"
 #include "HikariPlayerCharacter.h"
 
@@ -19,6 +20,7 @@ void UPlayerState_Idle::OnEnter_Implementation()
 	Input->OnMoveXDelegate.AddUObject(this, &UPlayerState_Idle::OnMoveInput);
 	Input->OnMoveYDelegate.AddUObject(this, &UPlayerState_Idle::OnMoveInput);
 	Input->OnLmbDelegate.AddUObject(this, &UPlayerState_Idle::OnLmb);
+	Input->OnQDelegate.AddUObject(this, &UPlayerState_Idle::OnQ);
 
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Silver, TEXT("状态: Idle"));
 }
@@ -36,6 +38,7 @@ void UPlayerState_Idle::OnExit_Implementation()
 	Input->OnMoveXDelegate.RemoveAll(this);
 	Input->OnMoveYDelegate.RemoveAll(this);
 	Input->OnLmbDelegate.RemoveAll(this);
+	Input->OnQDelegate.RemoveAll(this);
 }
 
 void UPlayerState_Idle::OnMoveInput(float Value)
@@ -55,5 +58,14 @@ void UPlayerState_Idle::OnLmb()
 	if (Player)
 	{
 		Player->SwitchState(UPlayerState_Attack1::StaticClass());
+	}
+}
+
+void UPlayerState_Idle::OnQ()
+{
+	AHikariPlayerCharacter* Player = Cast<AHikariPlayerCharacter>(GetOwner());
+	if (Player)
+	{
+		Player->SwitchState(UPlayerState_Skill1::StaticClass());
 	}
 }

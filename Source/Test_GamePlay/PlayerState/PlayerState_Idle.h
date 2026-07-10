@@ -21,4 +21,5 @@ protected:
 private:
 	void OnMoveInput(float Value);
 	void OnLmb();
+	void OnQ();
 };
