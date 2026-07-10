@@ -2,6 +2,16 @@
 
 #include "Common/StateBase.h"
 
+UStateBase::UStateBase()
+{
+}
+
+void UStateBase::BeginPlay()
+{
+	Super::BeginPlay();
+	// 需要组件就绪后的事件可放在这里
+}
+
 void UStateBase::OnEnter_Implementation()
 {
 	// 进入状态时的逻辑，子类可重写
