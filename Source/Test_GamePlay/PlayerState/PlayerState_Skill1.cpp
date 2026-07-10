@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Skill/HikariSkillComponent.h"
 #include "Engine/World.h"
+#include "Engine/LocalPlayer.h"
 
 void UPlayerState_Skill1::OnEnter_Implementation()
 {
@@ -22,6 +23,22 @@ void UPlayerState_Skill1::OnEnter_Implementation()
 	{
 		Input->OnMoveXDelegate.AddUObject(this, &UPlayerState_Skill1::OnMoveX);
 		Input->OnMoveYDelegate.AddUObject(this, &UPlayerState_Skill1::OnMoveY);
+	}
+
+	// 旋转朝向鼠标方向（仅 Yaw）
+	if (APlayerController* PC = Cast<APlayerController>(Player->GetController()))
+	{
+		FHitResult Hit;
+		PC->GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+		if (Hit.bBlockingHit)
+		{
+			FVector ToTarget = Hit.Location - Player->GetActorLocation();
+			ToTarget.Z = 0.0f;
+			if (!ToTarget.IsNearlyZero())
+			{
+				Player->SetActorRotation(FRotator(0.0f, ToTarget.Rotation().Yaw, 0.0f));
+			}
+		}
 	}
 
 	// 释放 1 技能（在动画之前，否则 CanStartAction 会拦截）
