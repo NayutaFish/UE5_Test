@@ -24,6 +24,8 @@ void ADemoRoomManager::BeginPlay()
 
 	CollectSpawnPoints();
 
+	SpawnQuota = MaxEnemySpawnCount;
+
 	if (bAutoStart)
 	{
 		FTimerHandle StartTimerHandle;
@@ -68,9 +70,9 @@ void ADemoRoomManager::StartRoom()
 		return;
 	}
 
-	if (!EnemyClass)
+	if (EnemyClasses.IsEmpty())
 	{
-		UE_LOG(LogTest_GamePlay, Error, TEXT("EnemyClass is not set in DemoRoomManager."));
+		UE_LOG(LogTest_GamePlay, Error, TEXT("EnemyClasses is empty in DemoRoomManager."));
 		return;
 	}
 
@@ -96,9 +98,9 @@ void ADemoRoomManager::SpawnWave()
 		return;
 	}
 
-	if (!EnemyClass)
+	if (EnemyClasses.IsEmpty())
 	{
-		UE_LOG(LogTest_GamePlay, Error, TEXT("EnemyClass is not set in DemoRoomManager."));
+		UE_LOG(LogTest_GamePlay, Error, TEXT("EnemyClasses is empty in DemoRoomManager."));
 		return;
 	}
 
@@ -111,6 +113,7 @@ void ADemoRoomManager::SpawnWave()
 	AliveEnemyCount = 0;
 	SpawnedEnemies.Empty();
 
+	int32 ClassIndex = 0;
 	for (AEnemySpawnPoint* SpawnPoint : SpawnPoints)
 	{
 		if (!IsValid(SpawnPoint))
@@ -118,13 +121,21 @@ void ADemoRoomManager::SpawnWave()
 			continue;
 		}
 
+		TSubclassOf<AEnemyBase> ClassToSpawn = EnemyClasses[ClassIndex % EnemyClasses.Num()];
+		if (!ClassToSpawn)
+		{
+			++ClassIndex;
+			continue;
+		}
+
 		AEnemyBase* SpawnedEnemy = World->SpawnActor<AEnemyBase>(
-			EnemyClass,
+			ClassToSpawn,
 			SpawnPoint->GetSpawnTransform()
 		);
 
 		if (!IsValid(SpawnedEnemy))
 		{
+			++ClassIndex;
 			continue;
 		}
 
@@ -132,6 +143,7 @@ void ADemoRoomManager::SpawnWave()
 
 		SpawnedEnemies.Add(SpawnedEnemy);
 		++AliveEnemyCount;
+		++ClassIndex;
 
 		UE_LOG(LogTest_GamePlay, Log, TEXT("Spawned enemy: %s"), *SpawnedEnemy->GetName());
 	}

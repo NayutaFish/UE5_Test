@@ -6,6 +6,8 @@
 #include "PlayerState/PlayerState_Skill1.h"
 #include "Input/PlayerInputComponent.h"
 #include "HikariPlayerCharacter.h"
+#include "Skill/HikariSkillComponent.h"
+#include "Skill/SkillTypes.h"
 
 void UPlayerState_Idle::OnEnter_Implementation()
 {
@@ -64,7 +66,9 @@ void UPlayerState_Idle::OnLmb()
 void UPlayerState_Idle::OnQ()
 {
 	AHikariPlayerCharacter* Player = Cast<AHikariPlayerCharacter>(GetOwner());
-	if (Player)
+	if (!Player || !Player->SkillComponent) return;
+
+	if (!Player->SkillComponent->IsOnCooldown(EPlayerSkillID::TripleProjectile, Player->SkillComponent->TripleProjectileCooldown))
 	{
 		Player->SwitchState(UPlayerState_Skill1::StaticClass());
 	}

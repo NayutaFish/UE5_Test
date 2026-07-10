@@ -7,6 +7,8 @@
 #include "PlayerState/PlayerState_Skill1.h"
 #include "Input/PlayerInputComponent.h"
 #include "HikariPlayerCharacter.h"
+#include "Skill/HikariSkillComponent.h"
+#include "Skill/SkillTypes.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 UPlayerState_Move::UPlayerState_Move()
@@ -113,7 +115,9 @@ void UPlayerState_Move::OnMoveY(float Value)
 void UPlayerState_Move::OnQ()
 {
 	AHikariPlayerCharacter* Player = Cast<AHikariPlayerCharacter>(GetOwner());
-	if (Player)
+	if (!Player || !Player->SkillComponent) return;
+
+	if (!Player->SkillComponent->IsOnCooldown(EPlayerSkillID::TripleProjectile, Player->SkillComponent->TripleProjectileCooldown))
 	{
 		Player->SwitchState(UPlayerState_Skill1::StaticClass());
 	}

@@ -3,6 +3,7 @@
 #include "Enemy/EnemyBase.h"
 
 #include "Common/AttackAreaBase.h"
+#include "Common/StateBase.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/World.h"
@@ -11,7 +12,7 @@
 
 AEnemyBase::AEnemyBase()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	// 胶囊体同时作为根组件
 	CapsuleCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollision"));
@@ -35,40 +36,36 @@ void AEnemyBase::BeginPlay()
 
 	CurrentHealth = MaxHealth;
 	bIsDead = false;
-
-	StartAttackTimer();
 }
 
-void AEnemyBase::StartAttackTimer()
+void AEnemyBase::Tick(float DeltaTime)
 {
-	if (!AttackAreaClass) return;
+	Super::Tick(DeltaTime);
 
-	GetWorldTimerManager().SetTimer(
-		AttackTimerHandle,
-		this,
-		&AEnemyBase::OnAttackTimer,
-		AttackInterval,
-		true,
-		AttackInterval
-	);
-}
-
-void AEnemyBase::OnAttackTimer()
-{
-	if (bIsDead || !AttackAreaClass) return;
-
-	FActorSpawnParameters Params;
-	Params.Owner = this;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	if (AAttackAreaBase* AttackArea = GetWorld()->SpawnActor<AAttackAreaBase>(
-			AttackAreaClass,
-			GetActorLocation() + GetActorForwardVector() * 80.0f,
-			GetActorRotation(),
-			Params))
+	if (CurrentState)
 	{
-		AttackArea->Initialize(3.0f, 500.0f, 60.0f, true, true, false);
+		CurrentState->Update(DeltaTime);
 	}
+}
+
+void AEnemyBase::SwitchState(TSubclassOf<UStateBase> StateClass)
+{
+	if (!StateClass) return;
+
+	TArray<UStateBase*> Found;
+	GetComponents(StateClass, Found);
+	if (Found.Num() == 0) return;
+
+	UStateBase* NewState = Found[0];
+	if (NewState == CurrentState) return;
+
+	if (CurrentState)
+	{
+		CurrentState->OnExit();
+	}
+
+	CurrentState = NewState;
+	CurrentState->OnEnter();
 }
 
 void AEnemyBase::ApplyDamageToEnemy(float DamageAmount)

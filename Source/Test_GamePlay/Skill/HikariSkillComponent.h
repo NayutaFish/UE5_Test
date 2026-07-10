@@ -115,9 +115,11 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+public:
+	bool IsOnCooldown(EPlayerSkillID SkillID, float Cooldown) const;
+
 private:
 	bool CanCastSkill() const;
-	bool IsOnCooldown(EPlayerSkillID SkillID, float Cooldown) const;
 	bool CastCircularSlash();
 	bool CastTripleProjectile();
 	bool SpawnProjectile(const FVector& SpawnLocation, const FVector& Direction, const TCHAR* ProjectileLabel);
