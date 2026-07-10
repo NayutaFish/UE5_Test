@@ -49,9 +49,18 @@ void AAttackAreaBase::Tick(float DeltaTime)
 		FHitResult Hit;
 		FVector Start = GetActorLocation();
 		FVector End = Start + GetActorForwardVector() * Speed * DeltaTime * 2.0f;
-		if (GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_WorldStatic))
+
+		// 只检测 WorldStatic 对象，忽略 Character/Pawn
+		FCollisionObjectQueryParams ObjParams;
+		ObjParams.AddObjectTypesToQuery(ECC_WorldStatic);
+
+		FCollisionQueryParams QueryParams;
+		QueryParams.AddIgnoredActor(this);
+		QueryParams.AddIgnoredActor(GetOwner());
+
+		if (GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, ObjParams, QueryParams))
 		{
-			Destroy();
+			Disappear(EAttackAreaDisappearReason::HitObstacle);
 			return;
 		}
 	}
@@ -59,7 +68,7 @@ void AAttackAreaBase::Tick(float DeltaTime)
 	ElapsedTime += DeltaTime;
 	if (ElapsedTime >= LifeTime)
 	{
-		Destroy();
+		Disappear(EAttackAreaDisappearReason::Lifetime);
 		return;
 	}
 
@@ -109,8 +118,27 @@ void AAttackAreaBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 	// 近战攻击不销毁，等 LifeTime 自然结束
 	if (!bIsMeleeAttack)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("AttackArea: 命中敌人"));
 		SetLifeSpan(0.1f);
 	}
+}
+
+void AAttackAreaBase::Disappear(EAttackAreaDisappearReason Reason)
+{
+	switch (Reason)
+	{
+	case EAttackAreaDisappearReason::Lifetime:
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("AttackArea: 生命周期结束"));
+		break;
+	case EAttackAreaDisappearReason::HitEnemy:
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("AttackArea: 命中敌人"));
+		break;
+	case EAttackAreaDisappearReason::HitObstacle:
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("AttackArea: 碰到障碍物"));
+		break;
+	}
+
+	Destroy();
 }
 
 void AAttackAreaBase::ApplyDamage_Implementation(AActor* Target)
@@ -127,6 +155,12 @@ void AAttackAreaBase::ApplyDamage_Implementation(AActor* Target)
 
 bool AAttackAreaBase::IsValidTarget_Implementation(AActor* Target)
 {
+	// 如果目标是玩家且正在闪避，跳过
+	if (AHikariPlayerCharacter* PlayerTarget = Cast<AHikariPlayerCharacter>(Target))
+	{
+		if (PlayerTarget->IsDashing()) return false;
+	}
+
 	if (!bDamageOpponentOnly) return true;
 
 	if (GetOwner() && GetOwner()->IsA<AHikariPlayerCharacter>())

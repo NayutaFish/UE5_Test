@@ -27,6 +27,7 @@ private:
 	void OnMoveY(float Value);
 	void OnShift(float Value);
 	void OnLmb();
+	void OnSpace();
 
 	float LastInputTime = 0.0f;
 	float LastShiftTime = 0.0f;

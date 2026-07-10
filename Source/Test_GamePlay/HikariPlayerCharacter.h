@@ -94,6 +94,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void Die();
+	void OnAttack();
 // 攻击动画蒙太奇
 // 之后在 BP_Hikari 类默认值里指定为 AM_Hikari_Attack_01
 UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
@@ -149,7 +152,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	TSubclassOf<AAttackAreaBase> AttackAreaClass;
 
-protected:
-	void Die();
-	void OnAttack();
+public:
+	/** 是否正在闪避中 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
+	bool bIsDashing = false;
+
+	UFUNCTION(BlueprintPure, Category = "State")
+	bool IsDashing() const { return bIsDashing; }
+
+	/** 是否可以冲刺 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
+	bool bCanDash = true;
+
+	/** 冲刺冷却：设置 bCanDash=false，time 秒后恢复 true */
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void StartDashCooldown(float Time);
 };

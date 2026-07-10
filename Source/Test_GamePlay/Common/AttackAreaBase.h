@@ -7,6 +7,14 @@
 #include "Components/BoxComponent.h"
 #include "AttackAreaBase.generated.h"
 
+UENUM()
+enum class EAttackAreaDisappearReason : uint8
+{
+	Lifetime,
+	HitEnemy,
+	HitObstacle
+};
+
 UCLASS(Blueprintable)
 class TEST_GAMEPLAY_API AAttackAreaBase : public AActor
 {
@@ -55,6 +63,9 @@ public:
 
 protected:
 	void SetupCollision();
+
+	/** 统一销毁入口，带原因屏幕输出 */
+	void Disappear(EAttackAreaDisappearReason Reason);
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
 	void ApplyDamage(AActor* Target);

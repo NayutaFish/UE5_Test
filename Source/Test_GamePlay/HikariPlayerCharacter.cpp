@@ -240,6 +240,8 @@ void AHikariPlayerCharacter::HandleDamage(float DamageAmount)
 {
 	if (bIsDead || DamageAmount <= 0.0f) return;
 	CurrentHealth = FMath::Max(0.0f, CurrentHealth - DamageAmount);
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red,
+		FString::Printf(TEXT("玩家受伤: -%.0f (剩余 %.0f)"), DamageAmount, CurrentHealth));
 	if (CurrentHealth <= 0.0f) Die();
 }
 
@@ -256,6 +258,16 @@ void AHikariPlayerCharacter::Die()
 	CurrentHealth = 0.0f;
 	OnPlayerDeath.Broadcast(this);
 	Destroy();
+}
+
+void AHikariPlayerCharacter::StartDashCooldown(float Time)
+{
+	bCanDash = false;
+	FTimerHandle Handle;
+	GetWorldTimerManager().SetTimer(Handle, FTimerDelegate::CreateWeakLambda(this, [this]()
+	{
+		bCanDash = true;
+	}), Time, false);
 }
 
 // ──────────────────────────────

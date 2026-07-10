@@ -3,6 +3,7 @@
 #include "PlayerState/PlayerState_Move.h"
 #include "PlayerState/PlayerState_Idle.h"
 #include "PlayerState/PlayerState_Attack1.h"
+#include "PlayerState/PlayerState_Dash.h"
 #include "Input/PlayerInputComponent.h"
 #include "HikariPlayerCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -29,6 +30,7 @@ void UPlayerState_Move::OnEnter_Implementation()
 	Input->OnMoveYDelegate.AddUObject(this, &UPlayerState_Move::OnMoveY);
 	Input->OnShiftDelegate.AddUObject(this, &UPlayerState_Move::OnShift);
 		Input->OnLmbDelegate.AddUObject(this, &UPlayerState_Move::OnLmb);
+		Input->OnSpaceDelegate.AddUObject(this, &UPlayerState_Move::OnSpace);
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Silver, TEXT("状态: Move"));
 }
 
@@ -46,6 +48,7 @@ void UPlayerState_Move::OnExit_Implementation()
 		Input->OnMoveYDelegate.RemoveAll(this);
 		Input->OnShiftDelegate.RemoveAll(this);
 		Input->OnLmbDelegate.RemoveAll(this);
+		Input->OnSpaceDelegate.RemoveAll(this);
 	}
 
 	Player->GetCharacterMovement()->MaxWalkSpeed = Player->WalkSpeed;
@@ -102,6 +105,15 @@ void UPlayerState_Move::OnMoveY(float Value)
 	FString DirText = Value > 0.0f ? TEXT("↑ W") : TEXT("↓ S");
 	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Green,
 		FString::Printf(TEXT("MoveY: %s"), *DirText));
+}
+
+void UPlayerState_Move::OnSpace()
+{
+	AHikariPlayerCharacter* Player = Cast<AHikariPlayerCharacter>(GetOwner());
+	if (Player && Player->bCanDash)
+	{
+		Player->SwitchState(UPlayerState_Dash::StaticClass());
+	}
 }
 
 void UPlayerState_Move::OnShift(float Value)
